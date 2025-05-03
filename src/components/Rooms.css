@@ -1,0 +1,22 @@
+.Rooms {
+    font-size:18px;
+    line-height: 2;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap:100px;
+    padding: 15px 200px;
+    width: fit-content;
+    border-bottom: 1px solid rgb(236,236,236)
+}
+.Rooms>div{
+    white-space: nowrap;
+    flex-shrink:0;
+}
+
+.Rooms .room_name{
+    cursor: pointer;
+}
+.Rooms .room_info{
+    min-width:120px;
+}
