@@ -1,10 +1,18 @@
 @font-face{
-    font-family: "NanumPenScript";
-    src: url("/public/NanumPenScript-Regular.ttf")
+    font-family: "Karma";
+    src: url("/public/Karma/Karma-Regular.ttf")
+}
+
+@font-face{
+    font-family: "inter";
+    src: url("/public/Inter/Inter-Italic-VariableFont_opsz\,wght.ttf")
+}
+body{
+    display:flex;
 }
 
 body * {
-    font-family:"NanumPenScript"
+    font-family:"inter"
 }
 
 #root{

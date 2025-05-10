@@ -15,7 +15,12 @@ import Button from "./components/Button"
 import Header from './components/Header'
 
 //그룹 데이터에 인원 배열로 추가하고, 받아올 때 속해 있는 그룹 나오도록 getPerson 함수 만들어서 데이터 거르기
-//id,room_name,room_manager,members,hiden,room_info 받아오기기
+//id,room_name,room_manager,members,hiden,room_info 받아오기
+/*data: 상태 받아옴(useReducer 사용해 방 상태 받아옴)
+roomstatecontext로 room의 정보 하위 컴포넌트까지 뿌려줌
+*/
+
+
 const mockData=[
   {
     id:1,

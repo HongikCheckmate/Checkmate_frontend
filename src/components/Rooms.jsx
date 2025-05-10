@@ -4,9 +4,10 @@ import './Rooms.css'
 
 const Rooms=({id,room_name,room_manager,members,hiden,room_info})=>{
     return (
+        
         <div className='Rooms'>
             <div className='room_name'>
-                {id} 
+                {room_name} 
             </div>
             <div className='room_manager'>
                 {room_manager}
