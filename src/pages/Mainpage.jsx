@@ -10,7 +10,6 @@ import {useState,useContext} from 'react'
 import {RoomStateContext} from '../App'
 
 
-/*home=mainpage*/
 
 const Mainpage = () => {
     const data = useContext(RoomStateContext);
@@ -22,7 +21,7 @@ const Mainpage = () => {
     return (
       <div
         style={{
-          width: '1300px',            // 전체 레이아웃 고정
+          width: '1300px',           
           minHeight: '100vh',
           overflow: 'auto',
           padding: '20px',

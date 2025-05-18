@@ -1,0 +1,45 @@
+.signupmodal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 550px; 
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  overflow-y: auto; /* 내용이 넘치면 스크롤 가능 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.inputs{
+    margin-top: 70px;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.input-row label {
+  width: 90px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.input-row input {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    margin-top: 40px;
+  }

@@ -1,5 +1,6 @@
 import Modal from 'react-modal';
-import { useState } from 'react';
+import Invite from './Invite';
+import { useState,useEffect } from 'react';
 import './Makegroup.css';
 import Button from '../components/Button';
 
@@ -8,17 +9,18 @@ const Makegroup = ({ isOpen, onClose }) => {
     room_Name: '',
     room_info: '',
     hiden: 'TRUE',
-  });
+  }); 
+  //mockdata
 
-  const [isInviteOpen, setIsInviteOpen] = useState(false);
-  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [isInviteOpen, setIsInviteOpen] = useState(false) //invite팝업창 관리
+  const [selectedMembers, setSelectedMembers] = useState([])  // 
 
   const handleInviteClick = () => {
     setIsInviteOpen(true);
   };
 
   const handleInviteClose = () => {
-    setIsInviteOpen(false);
+    setIsInviteOpen(false)
   };
 
   const handleMemberSelect = (member) => {
@@ -27,8 +29,15 @@ const Makegroup = ({ isOpen, onClose }) => {
     }
   };
   
+   useEffect(()=>{
+    if (!isOpen){
+      setSelectedMembers([])
+    }
+  },[isOpen])
+  
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="그룹 생성 모달" className="Modal" overlayClassName="Overlay">
+    <Modal isOpen={isOpen} onRequestClose={onClose}  className="Modal" overlayClassName="Overlay">
+      <Invite isOpen={isInviteOpen} onClose={handleInviteClose} onSelectMember={handleMemberSelect} selectedMembers={selectedMembers}/>
       <div className="modal-container">
         <h2>새 그룹 만들기</h2>
 
@@ -38,6 +47,7 @@ const Makegroup = ({ isOpen, onClose }) => {
           <input
             type="text"
             value={input.room_Name}
+            placeholder='그룹 이름을 입력하세요'
             onChange={(e) => setInput({ ...input, room_Name: e.target.value })}
           />
         
@@ -58,10 +68,12 @@ const Makegroup = ({ isOpen, onClose }) => {
             {selectedMembers.map((member, idx) => (
               <div key={idx} className="member-item">{member}</div>
             ))}
+
           </div>
         
           <label>설명</label>
           <textarea
+            placeholder='그룹 설명을 입력하세요'
             value={input.room_info}
             onChange={(e) => setInput({ ...input, room_info: e.target.value })}
           />

@@ -7,7 +7,7 @@ import Missionpage from './pages/Missionpage'
 import Makegroup from "./pages/Makegroup"
 import Mypage from "./pages/Mypage"
 import Alert from "./pages/Alert"
-import Makeid from "./pages/Makeid"
+import Signup from "./pages/Signup"
 import Invite from './pages/Invite'
 import Notfound from './pages/Notfound'
 
@@ -103,7 +103,7 @@ function App() {
       <Route path="/mission" delement={<Missionpage/>}/>
       <Route path="/my" element={<Mypage />} />
       <Route path="/alert" element={<Alert />} />
-      <Route path="/id" element={<Makeid />} />
+      <Route path="/signup" element={<Signup />} />
       <Route path="/group" element={<Makegroup />} />
       <Route path="/invite" element={<Invite />} />
       {/* <Route path="*" element={<Notfound />}/> */}
