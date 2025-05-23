@@ -5,6 +5,10 @@ import './Login.css'
 const Loginsuccess=({nickname})=>{
     const nav=useNavigate()
 
+    const handleLogout = () => {
+        window.location.reload();
+    };
+
     return(
         
         <div className="login">
@@ -19,6 +23,14 @@ const Loginsuccess=({nickname})=>{
             className="logsuc button"
             text = '알림' 
             onClick={()=>nav('/alert')}/>
+
+            <Button
+            className='logout button'
+            type='NEGATIVE'
+            text='로그아웃'
+            onClick={handleLogout}
+            
+            />
         </div>
     
     )

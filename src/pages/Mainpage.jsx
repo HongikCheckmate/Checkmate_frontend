@@ -28,7 +28,6 @@ const Mainpage = () => {
         }}
       >
         <Header title={"Checkmate"} />
-        <Link to="/sub">subpage</Link>
         <Makegroup isOpen={isModalOpen} onClose={closeModal}/>
   
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>

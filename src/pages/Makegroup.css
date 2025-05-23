@@ -1,4 +1,3 @@
-/* 전체 모달 중앙 정렬 */
 .Overlay {
     position: fixed;
     top: 0;
@@ -21,14 +20,12 @@
     outline: none;
   }
   
-  /* 콘텐츠 정렬 */
   .modal-container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   
-  /* 각 form 요소 간격 및 정렬 */
   .form-group {
     width: 100%;
     margin: 30px;
