@@ -56,3 +56,36 @@
 .Rooms.header{
     background-color: #E2D3D3;
 }
+
+.room_link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+.room_link:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal_content {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    width: 300px;
+    max-width: 90%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    text-align: center;
+}

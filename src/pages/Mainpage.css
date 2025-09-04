@@ -1,0 +1,24 @@
+.mainpage_container{
+    width:1300px;
+    min-height: 100vh; 
+    overflow: auto;
+    padding: 20px;
+}
+
+.header{
+    margin-bottom: 20px;
+}
+
+.content{
+    display:flex;
+    justify-content: space-between;
+    margin-top:20px;
+}
+
+.roomlist{
+    width: 800px;
+}
+
+.mainpage_login{
+    flex-direction: column;
+}

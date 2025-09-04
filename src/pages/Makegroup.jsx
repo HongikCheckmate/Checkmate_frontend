@@ -1,8 +1,11 @@
 import Modal from 'react-modal';
+import axios from 'axios';
 import Invite from './Invite';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useContext } from 'react';
 import './Makegroup.css';
 import Button from '../components/Button';
+
+import {RoomDispatchContext} from '../App'
 
 const Makegroup = ({ isOpen, onClose }) => {
   const [input, setInput] = useState({
@@ -10,11 +13,12 @@ const Makegroup = ({ isOpen, onClose }) => {
     room_info: '',
     hiden: 'TRUE',
   }); 
-  //mockdata
+
 
   const [isInviteOpen, setIsInviteOpen] = useState(false) //invite팝업창 관리
   const [selectedMembers, setSelectedMembers] = useState([])  // 
 
+  const refreshGroups=useContext(RoomDispatchContext)
   const handleInviteClick = () => {
     setIsInviteOpen(true);
   };
@@ -29,6 +33,24 @@ const Makegroup = ({ isOpen, onClose }) => {
     }
   };
   
+  const handleSubmit=async()=>{
+    try{
+      await axios.post("http://localhost:8080/api/groups",{
+        room_Name: input.room_Name,
+        room_info:input.room_info,
+        hiden:input.hiden==='True',
+        members:selectedMembers,//서버에서 members:[String] 형식을 받아야됨
+        room_manager:'',
+      })
+      refreshGroups()
+      onClose()
+    }catch(err){
+      console.error("그룹 생성 실패",err)
+    
+    }
+  }
+
+
    useEffect(()=>{
     if (!isOpen){
       setSelectedMembers([])
@@ -86,7 +108,7 @@ const Makegroup = ({ isOpen, onClose }) => {
         </div>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
 export default Makegroup;

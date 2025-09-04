@@ -3,34 +3,35 @@ import Button from './Button'
 import Signup from '../pages/Signup'
 import Signin from './Signin'
 import { useState } from 'react'
-import Loginsuccess from './Loginsuccess'
 
-const Login=()=>{
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [id, setId] = useState('');
-    const [password, setPassword] = useState('');
-    const [logSuccess,setLogSuccess]=useState('');
-    const [nickname,setNickname]=useState('');
-    const {login,error}= Signin()
+const Login=({onLogin})=>{
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [id, setId] = useState('')
+    const [password, setPassword] = useState('')
+
+
+     const mockUser = [
+        { id: 'dlxodud', password: '1234', nickname: '이태영' },
+        
+    ]
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const handleLogin = async () => {
-        try {
-            const data = await login(id, password);
-            setNickname(data.nickname);
-            setLogSuccess(true);
-        } catch (err) {
-            console.error('로그인 실패:', err.message);
+    const handleLogin = () => {
+        const foundUser=mockUser.find(
+            (user)=>user.id===id&&user.password===password
+        )
+
+        if (foundUser){
+            onLogin({
+                id: foundUser.id,
+                nickname: foundUser.nickname})
+        } else{
+            alert('로그인 실패')
         }
     }
 
-  
-
-    if (logSuccess){
-        return <Loginsuccess nickname={nickname}/>
-    }
 
     return(
         <div className='login'>
