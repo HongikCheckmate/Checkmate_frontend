@@ -1,18 +1,26 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Button from './Button'
 import './Rooms.css'
 
-const Rooms = ({ id, room_name, room_manager, members, hiden, room_info }) => {
+const Rooms = ({ id, room_name, room_manager, members, hiden, room_info, isLoggedIn}) => {
     const [isOpen, setIsOpen] = useState(false)
-
+    const navigate=useNavigate()
+    const handleRoomClick=(e)=>{
+        e.preventDefault()
+        if(!isLoggedIn){
+            alert("로그인 후 이용 가능합니다")
+            return
+        }
+        navigate(`/sub/${id}`)
+    }
     return (
         <>
             <div className='Rooms'>
                 <div className='room_name'>
-                    <Link to={`/sub/${id}`} className="room_link">
+                    <a href={`/sub/${id}`} className='room_link' onClick={handleRoomClick}>
                         {room_name}
-                    </Link>
+                    </a>
                 </div>
 
                 <div className='room_manager'>

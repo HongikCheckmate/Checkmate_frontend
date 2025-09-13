@@ -1,25 +1,37 @@
 import Modal from 'react-modal'
 import { useState, useEffect } from 'react'
 import './Signup.css'
-import Button from '../components/Button'
+import Button from './Button'
 
 
 
 const Signup=({isOpen,onClose})=>{
 
     const handleSignup = async () => {
+    
+    if(input.password!==input.passwordConfirm){
+        alert('비밀번호가 일치하지 않습니다.')
+        return
+    }
+
     try {
-        const res = await fetch('http://localhost:8080/api/users/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(input),
+            const res = await fetch('http://localhost:8080/api/users/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id:input.id,
+                password:input.password,
+                email:input.email,
+                phone:input.phone,
+                nickname: input.nickname
+            }),
         });
 
         if (res.ok) {
         alert('회원가입 성공!');
-        onClose(); // 모달 닫기
+        onClose();
         } else {
         alert('회원가입 실패');
         }
@@ -32,6 +44,7 @@ const Signup=({isOpen,onClose})=>{
     const [input,setInput]=useState({
         id:'',
         password:'',
+        passwordConfirm:'',
         email:'',
         phone:'',
         nickname:''
@@ -42,6 +55,7 @@ const Signup=({isOpen,onClose})=>{
       setInput({
         id:'',
         password:'',
+        passwordConfirm:'',
         email:'',
         phone:'',
         nickname:''
@@ -69,12 +83,22 @@ const Signup=({isOpen,onClose})=>{
                 <div className="input-row">
                 <label>비밀번호: </label>
                  <input 
-                    type='text'
+                    type='password'
                     value={input.password}
                     placeholder='비밀번호를 입력하세요'
                     onChange={(e)=>setInput({...input, password:e.target.value})}
                  />
                  </div>
+
+                 <div className='input-row'>
+                    <label>비밀번호 확인: </label>
+                    <input
+                        type='password'
+                        value={input.passwordConfirm}
+                        placeholder='비밀번호를 다시 입력하세요'
+                        onChange={(e)=>setInput({...input,passwordConfirm:e.target.value})}
+                    />
+                </div>
 
                 <div className="input-row">
                  <label>이메일: </label>

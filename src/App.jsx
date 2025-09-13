@@ -8,7 +8,7 @@ import Missionpage from './pages/Missionpage'
 import Makegroup from "./pages/Makegroup"
 import Mypage from "./pages/Mypage"
 import Alert from "./pages/Alert"
-import Signup from "./pages/Signup"
+import Signup from "./components/Signup"
 import Invite from './pages/Invite'
 import Notfound from './pages/Notfound'
 import Login from './components/Login'
@@ -96,8 +96,8 @@ function App() {
         
         <Routes>
           <Route path="/" element={<Mainpage isLoggedIn={isLoggedIn} user={user} onLogin={handleLogin} onLogout={handleLogout}/>} />
-          <Route path="/sub/:id" element={<Subpage isLoggedIn={isLoggedIn} user={user} onLogin={handleLogin} onLogout={handleLogout}/>} />
-          <Route path="/mission/:id" element={<Missionpage/>}/>
+          <Route path="/sub/:subId" element={<Subpage isLoggedIn={isLoggedIn} user={user} onLogin={handleLogin} onLogout={handleLogout}/>} />
+          <Route path="/sub/:subId/mission/:missionId" element={<Missionpage/>}/>
           <Route path="/my" element={<Mypage />} />
           <Route path="/alert" element={<Alert />} />
           <Route path="/signup" element={<Signup />} />

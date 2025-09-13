@@ -5,6 +5,11 @@ import './Loginsuccess.css'
 const Loginsuccess=({user,onLogout})=>{
     const nav=useNavigate()
 
+    const handleLogout=()=>{
+        onLogout()
+        nav('/')
+    }
+
     return(
         
         <div className="loginsuccess">
@@ -26,7 +31,7 @@ const Loginsuccess=({user,onLogout})=>{
                 className='logout'
                 type='NEGATIVE'
                 text='로그아웃'
-                onClick={onLogout}/>
+                onClick={handleLogout}/>
                 
             </div>
         </div>

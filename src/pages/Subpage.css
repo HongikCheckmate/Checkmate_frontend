@@ -1,101 +1,62 @@
-/* .subpage_container {
-    padding: 20px 200px;
-    max-width: 1200px;
-    margin: 0 auto;
-} */
-
-.subpage_container{
+.subpage_container {
     width:1300px;
     min-height: 100vh; 
     overflow: auto;
     padding: 20px;
 }
 
-.subpage_content{
-    display:flex;
-    justify-content:space-between;
-    margin-top:20px;
-
-}
-.subpage_main{
-    width:800px;
+.subpage_content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 800px;
+  padding: 10px 200px;
 }
 
-/* 그룹 정보 카드 */
+
+
 .group_card {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: #fff;
-    border: 1px solid #ececec;
-    border-radius: 6px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
 }
 
-/* 그룹 정보 */
 .group_info {
-    flex: 2;
+  flex: 2;
+  margin-left: 60px;
 }
 
 .group_info h2 {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .group_desc {
-    margin-top: 10px;
-    color: #555;
+  margin-top: 10px;
+  color: #555;
 }
 
-/* 우측 버튼 세로 정렬 */
-.group_actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+
+.subpage_login {
+  display: flex;
+  flex-direction: column;
+  margin-left: 70px;
 }
 
-/* 미션 리스트 */
-.missions {
-    margin-top: 20px;
+.subpage_button{
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px;
+  padding: 10px;
+ 
 }
 
-.missions_table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 16px;
-    line-height: 2;
-}
-
-.missions_table th,
-.missions_table td {
-    border: 1px solid #eee;
-    text-align: center;
-    padding: 8px 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.missions_table th {
-    background-color: #E2D3D3;  /* Rooms.header 색상과 동일 */
-}
-
-.missions_table td {
-    background-color: #fff;
-}
-
-.mission_link {
-    font-weight: bold;
-    color: #333;
-    text-decoration: none;
-}
-
-.mission_link:hover {
-    color: #007bff;
-    text-decoration: underline;
-}
-
-.subpage_login{
-    flex-direction: column;
+.subpage_back{
+  margin-top: 30px;
+  text-align: center;
 }

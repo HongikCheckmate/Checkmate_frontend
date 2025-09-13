@@ -5,7 +5,6 @@ import RoomList from "../components/RoomList"
 import Login from '../components/Login'
 import Makegroupbutton from '../components/Makegroupbutton'
 import Makegroup from './Makegroup'
-import {Link} from "react-router-dom"
 import { RoomStateContext } from '../App'
 import {useState,useContext} from 'react'
 import Loginsuccess from '../components/Loginsuccess'
@@ -18,6 +17,7 @@ const Mainpage = ({isLoggedIn,user,onLogin,onLogout}) => {
 
     const openModal = () => setIsModalOpen(true)
     const closeModal = () => setIsModalOpen(false)
+    
   
   //   useEffect(()=>{
   //     const fetchGroups=async()=>{
@@ -43,7 +43,7 @@ const Mainpage = ({isLoggedIn,user,onLogin,onLogout}) => {
         <div className='content'>
           
           <div className='roomlist'>
-            <RoomList data={groups} />
+            <RoomList data={groups} isLoggedIn={isLoggedIn}/>
           </div>
   
           <div className='mainpage_login'>
@@ -51,7 +51,7 @@ const Mainpage = ({isLoggedIn,user,onLogin,onLogout}) => {
               <Loginsuccess user={user} onLogout={onLogout}/>)
               :(<Login onLogin={onLogin}/>
             )}
-            <Makegroupbutton open={openModal}/>
+            <Makegroupbutton open={openModal} isLoggedIn={isLoggedIn}/>
           </div>
         </div>
       </div>

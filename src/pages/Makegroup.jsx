@@ -1,9 +1,9 @@
-import Modal from 'react-modal';
-import axios from 'axios';
-import Invite from './Invite';
-import { useState,useEffect,useContext } from 'react';
-import './Makegroup.css';
-import Button from '../components/Button';
+import Modal from 'react-modal'
+import axios from 'axios'
+import Invite from './Invite'
+import { useState,useEffect,useContext } from 'react'
+import './Makegroup.css'
+import Button from '../components/Button'
 
 import {RoomDispatchContext} from '../App'
 
@@ -20,8 +20,8 @@ const Makegroup = ({ isOpen, onClose }) => {
 
   const refreshGroups=useContext(RoomDispatchContext)
   const handleInviteClick = () => {
-    setIsInviteOpen(true);
-  };
+    setIsInviteOpen(true)
+  }
 
   const handleInviteClose = () => {
     setIsInviteOpen(false)
@@ -29,9 +29,9 @@ const Makegroup = ({ isOpen, onClose }) => {
 
   const handleMemberSelect = (member) => {
     if (!selectedMembers.includes(member)) {
-      setSelectedMembers([...selectedMembers, member]);
+      setSelectedMembers([...selectedMembers, member])
     }
-  };
+  }
   
   const handleSubmit=async()=>{
     try{
@@ -111,4 +111,4 @@ const Makegroup = ({ isOpen, onClose }) => {
   )
 }
 
-export default Makegroup;
+export default Makegroup

@@ -1,9 +1,7 @@
-import './RoomList.css'
-import {Link} from 'react-router-dom'
 import RoomHeader from './RoomHeader'
 import Rooms from './Rooms'
 
-const RoomList=({data})=>{
+const RoomList=({data,isLoggedIn})=>{
     return (
         <div className='RoomList'>
             <div className='list_wrapper'>
@@ -21,6 +19,7 @@ const RoomList=({data})=>{
                                 members={group.members}
                                 hiden={group.hidden}  
                                 room_info={group.room_info}
+                                isLoggedIn={isLoggedIn}
                             />
                     ))
                 )}

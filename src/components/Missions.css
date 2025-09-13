@@ -1,0 +1,36 @@
+.missions_table {
+  width: 700px;
+  border-collapse: collapse;
+  font-size: 16px;
+  line-height: 2;
+}
+
+.missions_table th,
+.missions_table td {
+  border: 1px solid #eee;
+  text-align: center;
+  padding: 8px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.missions_table th {
+  background-color: #E2D3D3;
+}
+
+.missions_table td {
+  background-color: #fff;
+}
+
+.mission_link {
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+.mission_link:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
