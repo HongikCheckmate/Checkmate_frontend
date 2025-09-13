@@ -58,12 +58,12 @@ const Makegroup = ({ isOpen, onClose }) => {
   },[isOpen])
   
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose}  className="Modal" overlayClassName="Overlay">
+    <Modal isOpen={isOpen} onRequestClose={onClose}  className="makegroup_modal" overlayClassName="makegroup_overlay">
       <Invite isOpen={isInviteOpen} onClose={handleInviteClose} onSelectMember={handleMemberSelect} selectedMembers={selectedMembers}/>
-      <div className="modal-container">
+      <div className="makegroup_container">
         <h2>새 그룹 만들기</h2>
 
-        <div className="form-group">
+        <div className="makegroup_info">
 
           <label>그룹 이름</label>
           <input

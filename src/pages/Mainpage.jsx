@@ -12,11 +12,18 @@ import Loginsuccess from '../components/Loginsuccess'
 
 
 const Mainpage = ({isLoggedIn,user,onLogin,onLogout}) => {
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isMakeGroupOpen, setIsMakeGroupOpen] = useState(false)
     const groups=useContext(RoomStateContext)
 
-    const openModal = () => setIsModalOpen(true)
-    const closeModal = () => setIsModalOpen(false)
+    const openModal = () => {
+      if (!isLoggedIn){
+        alert('로그인 후 이용 가능합니다.')
+        return
+      }
+      setIsMakeGroupOpen(true)
+    }
+    
+    const closeModal = () => setIsMakeGroupOpen(false)
     
   
   //   useEffect(()=>{
@@ -38,7 +45,7 @@ const Mainpage = ({isLoggedIn,user,onLogin,onLogout}) => {
       <div className='mainpage_container'>
 
         <Header title={"Checkmate"} className='header'/>
-        <Makegroup isOpen={isModalOpen} onClose={closeModal}/>
+        <Makegroup isOpen={isMakeGroupOpen} onClose={closeModal}/>
   
         <div className='content'>
           
