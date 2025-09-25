@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { useParams,useNavigate } from "react-router-dom"
-import "./MissionPage.css"
+import "./Missionpage.css"
 import Button from "../components/Button"
 
-const MissionPage = () => {
+const Missionpage = () => {
   const { subId, missionId } = useParams()
   const navigate=useNavigate()
 
@@ -36,7 +36,7 @@ const MissionPage = () => {
   }
 
   return (
-    <div className="mission_page_container">
+    <div className="missionpage_container">
       <h2>{mockMission.title}</h2>
 
       <div className="mission_info">
@@ -67,4 +67,4 @@ const MissionPage = () => {
   )
 }
 
-export default MissionPage
+export default Missionpage
