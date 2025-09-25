@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import Modal from 'react-modal'
 import { useNavigate } from 'react-router-dom'
 import Button from "./Button"
 import './Loginsuccess.css'
+import Alert from './Alert'
+import Mypage from './Mypage'
+
 
 const Loginsuccess=({user,onLogout})=>{
     const [isMyOpen,setIsMyOpen]=useState(false)
@@ -40,23 +42,16 @@ const Loginsuccess=({user,onLogout})=>{
                 
             </div>
 
-            <Modal 
-            isOpen={isMyOpen}
-            onRequestClose={()=>setIsMyOpen(false)}
-            className='mypageModal'
-            >
-                <h2>마이페이지</h2>
-                <Button text='닫기' type='NEGATIVE' onClick={()=>setIsMyOpen(false)}/>
-            </Modal>
+            <Mypage
+                isOpen={isMyOpen}
+                onClose={()=>setIsMyOpen(false)}
+                user={user}
+            />
 
-            <Modal 
-            isOpen={isAlertOpen}
-            onRequestClose={()=>setIsAlertOpen(false)}
-            className='alertModal'
-            >
-                <h2>알림</h2>
-                <Button text='닫기' type='NEGATIVE' onClick={()=>setIsAlertOpen(false)}/>
-            </Modal>
+            <Alert
+                isOpen={isAlertOpen}
+                onClose={()=>setIsAlertOpen(false)}
+            />
         </div>
     
     )

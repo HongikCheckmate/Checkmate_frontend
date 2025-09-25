@@ -1,4 +1,3 @@
-import './App.css'
 //import axios from 'axios'
 import {useEffect,useState,createContext} from 'react'
 import {Routes,Route} from 'react-router-dom'
@@ -8,9 +7,7 @@ import Missionpage from './pages/Missionpage'
 import Makegroup from "./pages/Makegroup"
 import Signup from "./components/Signup"
 import Invite from './pages/Invite'
-import Notfound from './pages/Notfound'
-import Login from './components/Login'
-import Loginsuccess from './components/Loginsuccess'
+
 //id,room_name,room_manager,members,hiden,room_info 받아오기
 /*data: 상태 받아옴(useReducer 사용해 방 상태 받아옴)
 roomstatecontext로 room의 정보 하위 컴포넌트까지 뿌려줌
@@ -36,7 +33,7 @@ function App() {
     },
     {
       id: 2,
-      room_name: "React 프로젝트 팀",
+      room_name: "React 프로젝트 팀일수도있고아닐수도",
       room_manager: "이태영",
       members: ["이태영","박민수"],
       hidden: false,

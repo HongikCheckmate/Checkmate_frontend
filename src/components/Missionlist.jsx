@@ -20,7 +20,14 @@ const Missionlist = ({missions,subId}) => {
       title: "백준 100문제 풀기",
       start: "2025-08-01",
       end: "2025-08-10",
-      submitted: true,
+      status:'confirmed'
+    },
+    {
+      id: 2,
+      title: "React 미니 프로젝트 만들기",
+      start: "2025-09-05",
+      end: "2025-09-20",
+      status: 'none'
     },
   ]
 

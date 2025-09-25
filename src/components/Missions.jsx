@@ -1,9 +1,21 @@
-import { Link,useParams} from "react-router-dom"
+import { Link} from "react-router-dom"
+import { useState } from "react"
 import "./Missions.css"
+import Button from "./Button"
+import Missionstatus from "./Missionstatus"
 
 const Missions= ({ missions,subId }) => {
 
+  const [isModalOpen, setIsModalOpen]=useState(false)
+  const [selectedMission,setSelectedMission]=useState(null)
+
+  const viewStatus=(mission)=>{
+    setSelectedMission(mission)
+    setIsModalOpen(true)
+  }
+
   return (
+    <div>
     <table className="missions_table">
       <thead>
         <tr>
@@ -11,6 +23,7 @@ const Missions= ({ missions,subId }) => {
           <th>시작 날짜</th>
           <th>마감 날짜</th>
           <th>제출 여부</th>
+          <th>진행도</th>
         </tr>
       </thead>
       <tbody>
@@ -23,11 +36,31 @@ const Missions= ({ missions,subId }) => {
             </td>
             <td>{mission.start}</td>
             <td>{mission.end}</td>
-            <td>{mission.submitted ? "제출 완료" : "미제출"}</td>
+            <td>
+              {mission.status ==='submitted'
+                    ? '제출 완료'
+                    :mission.status==='confirmed'
+                    ? '검토 완료'
+                    : '미제출'
+              }
+            </td>
+            <td>
+              <Button text='보기' onClick={()=>viewStatus(mission)}/>
+            </td>
           </tr>
         ))}
       </tbody>
     </table>
+
+    {selectedMission && (
+      <Missionstatus
+        isOpen={isModalOpen}
+        onClose={()=>setIsModalOpen(false)}
+        mission={selectedMission}
+      />
+    )}
+    </div>
+    
   )
 }
 
