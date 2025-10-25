@@ -6,15 +6,14 @@ import Alert from './Alert'
 import Mypage from './Mypage'
 
 
-const Loginsuccess=({user,onLogout})=>{
+const Loginsuccess=({user})=>{
     const [isMyOpen,setIsMyOpen]=useState(false)
     const [isAlertOpen,setIsAlertOpen]=useState(false)
-    
     const nav=useNavigate()
 
     const handleLogout=()=>{
-        onLogout()
-        nav('/')    
+        localStorage.removeItem('token')
+        nav('/')
     }
 
     return(

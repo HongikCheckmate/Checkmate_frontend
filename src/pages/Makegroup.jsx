@@ -4,28 +4,29 @@ import Invite from './Invite'
 import { useState,useEffect,useContext } from 'react'
 import './Makegroup.css'
 import Button from '../components/Button'
-
 import {RoomDispatchContext} from '../App'
 
 const Makegroup = ({ isOpen, onClose }) => {
   const [input, setInput] = useState({
     room_Name: '',
     room_info: '',
-    hiden: 'TRUE',
-  }); 
+    hiden: true,
+  })
 
 
   const [isInviteOpen, setIsInviteOpen] = useState(false) //invite팝업창 관리
   const [selectedMembers, setSelectedMembers] = useState([])  // 
 
   const refreshGroups=useContext(RoomDispatchContext)
+  const token=localStorage.getItem('accessToken')
+  const currentUser=JSON.parse(localStorage.getItem('user'))?.nickname||''
   const handleInviteClick = () => {
     setIsInviteOpen(true)
   }
 
   const handleInviteClose = () => {
     setIsInviteOpen(false)
-  };
+  }
 
   const handleMemberSelect = (member) => {
     if (!selectedMembers.includes(member)) {
@@ -34,19 +35,34 @@ const Makegroup = ({ isOpen, onClose }) => {
   }
   
   const handleSubmit=async()=>{
+
+    if(!token){
+      alert('로그인 후 이용 가능합니다')
+    }
+
+    if(!input.room_name){
+      alert('그룹 이름을 입력하세요')
+      return
+    }
+
     try{
-      await axios.post("http://localhost:8080/api/groups",{
-        room_Name: input.room_Name,
+      await axios.post("http://checkmate.kimbepo.xyz/api/group",{
+        room_name: input.room_name,
         room_info:input.room_info,
-        hiden:input.hiden==='True',
+        hidden:input.hidden,
         members:selectedMembers,//서버에서 members:[String] 형식을 받아야됨
-        room_manager:'',
-      })
-      refreshGroups()
+        room_manager:currentUser,
+      },
+      {
+        headers:{Authorization:`Bearer ${token}`}
+      }
+    )
+      refreshGroups?.()
       onClose()
+      setInput({room_name:'',room_info:'',hidden:true})
     }catch(err){
       console.error("그룹 생성 실패",err)
-    
+      alert('그룹 생성 오류')
     }
   }
 
@@ -54,6 +70,7 @@ const Makegroup = ({ isOpen, onClose }) => {
    useEffect(()=>{
     if (!isOpen){
       setSelectedMembers([])
+      setInput({room_name:'',room_info:'',hidden:true})
     }
   },[isOpen])
   
@@ -68,15 +85,15 @@ const Makegroup = ({ isOpen, onClose }) => {
           <label>그룹 이름</label>
           <input
             type="text"
-            value={input.room_Name}
+            value={input.room_name}
             placeholder='그룹 이름을 입력하세요'
-            onChange={(e) => setInput({ ...input, room_Name: e.target.value })}
+            onChange={(e) => setInput({ ...input, room_name: e.target.value })}
           />
         
           <label>공개 여부</label>
           <select
-            value={input.hiden}
-            onChange={(e) => setInput({ ...input, hiden: e.target.value })}
+            value={input.hidden}
+            onChange={(e) => setInput({ ...input, hidden: e.target.value==='TRUE' })}
           >
             <option value="TRUE">공개</option>
             <option value="FALSE">비공개</option>
@@ -85,10 +102,10 @@ const Makegroup = ({ isOpen, onClose }) => {
           
           <label>멤버</label>
           <Button onClick={handleInviteClick} type="POSITIVE" text='멤버 검색'/>
-          <div className="member-list">
+          <div className="member_list">
             {selectedMembers.length === 0 && <p>선택된 멤버 없음</p>}
             {selectedMembers.map((member, idx) => (
-              <div key={idx} className="member-item">{member}</div>
+              <div key={idx} className="member_item">{member}</div>
             ))}
 
           </div>
@@ -102,9 +119,9 @@ const Makegroup = ({ isOpen, onClose }) => {
         </div>
         
 
-        <div className="button-group">
-          <Button type="POSITIVE" text='생성하기'/>
-          <Button onClick={onClose} type="NEGATIVE" text='닫기'/>
+        <div className="button_group">
+          <Button type="POSITIVE" text='생성하기' onClick={handleSubmit}/>
+          <Button type="NEGATIVE" text='닫기' onClick={onClose}/>
         </div>
       </div>
     </Modal>

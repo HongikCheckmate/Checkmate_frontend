@@ -1,32 +1,37 @@
 import { useState } from "react"
 
-const Signin=()=>{
-    const [error,setError]=useState(null)
+const useSignin = () => {
+    const [error, setError] = useState(null)
 
     const login = async (username, password) => {
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('https://checkmate.kimbepo.xyz/user/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
-            });
+            })
 
-            if (!response.ok) {
-                throw new Error('로그인 실패');
+            console.log('response status:',response.status)
+            console.log('response ok:',response.ok)
+
+            const data = await response.json().catch(() => null)
+            console.log('response body:', data)
+    
+            if (!response.ok){
+                const msg = data?.message||data?.error||'로그인 실패'
+                throw new Error(msg)
             }
 
-            const data = await response.json();
-            return data; //{token, nickname} 같이 받아와야됨됨
+            localStorage.setItem('token',data.token)
+            return data
         } catch (err) {
-            setError(err.message);
-            throw err;
+            console.error('Login 요청 중 에러발생:', err)
+            setError(err.message)
+            throw err
         }
-    };
+    }
 
-    return { login, error };
-};
+    return { login, error }
+}
 
-
-export default Signin
+export default useSignin

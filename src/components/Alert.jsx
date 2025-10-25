@@ -1,35 +1,66 @@
 import { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import Button from './Button'
+import axios from 'axios'
 import './Alert.css'
 
-const Alert=({isOpen, onClose, onAccept, onDecline})=>{
+const Alert=({isOpen, onClose})=>{
 
     const [alerts,setAlerts]=useState([])
+    const token=localStorage.getItem('accessToken')
 
     useEffect(()=>{
-        if(isOpen){
-            const mockData=[
-                {id: 1, message: "새로운 그룹 초대가 있습니다.", type: "invite" },
-                { id: 2, message: "오늘까지 미션을 제출하세요.", type: "info" },
-                { id: 3, message: "그룹에서 강퇴되었습니다.", type: "info" }
-            ]
-            setAlerts(mockData)
-        }
+        if(isOpen) fetchAlerts()
     },[isOpen])
 
-    const handleAccept = (alert) => {
-        console.log("수락:", alert)
-        setAlerts(prev => prev.filter(a => a.id !== alert.id))
-        if (onAccept) onAccept(alert)
+    const fetchAlerts=async()=>{
+        try{
+            const res=await axios.get('http://checkmate.kimbepo.xyz/api/alert',{
+                headers:{Authorization:`Bearer ${token}`}
+            })
+            setAlerts(res.data)
+        } catch (err){
+            alert('알림 오류')
+        }
     }
 
-    const handleDecline = (alert) => {
-        console.log("거절:", alert)
-        setAlerts(prev => prev.filter(a => a.id !== alert.id))
-        if (onDecline) onDecline(alert)
+    const handleAccept = async(alert) => {
+        try{
+            await axios.post(
+                `http://checkmate.kimbepo.xyz/api/alerts/${alert.id}/accept`,
+                {},
+                { headers:{Authorization: `Bearer ${token}`}}
+            )
+            setAlerts((prev)=>prev.filter((a)=>a.id!==alert.id))
+        } catch (err){
+            alert('수락 실패')
+        }
     }
 
+    const handleDecline = async(alert) => {
+        try{
+            await axios.post(
+                `http://checkmate.kimbepo.xyz/api/alerts/${alert.id}/decline`,
+                {},
+                {headers:{Authorization: `Bearer ${token}`}}
+            )
+            setAlerts(prev=>prev.filter(a=>a.id !== alert.id))
+        } catch (err){
+            alert('거절 실패')
+        }
+    }
+
+    const handleCloseAlert = async(alert)=>{
+        try{
+            await axios.delete(
+                `http://chechmate.kimbepo.xyz/api/alerts/${alert.id}`,
+                {headers:{Authorization:`Bearer ${token}`}}
+            )
+            setAlerts((prev)=>prev.filter((a)=>a.id !== alert.id))
+        } catch (err){
+            alert('알림 닫기 실패')
+        }
+    }
 
     return (
         <Modal
@@ -44,17 +75,17 @@ const Alert=({isOpen, onClose, onAccept, onDecline})=>{
                     {alerts?.length===0?(
                         <p>새로운 알림이 없습니다.</p>
                     ):(
-                        alerts.map((alert,idx)=>(
-                            <div key={idx} className='alert_item'>
+                        alerts.map((alert)=>(
+                            <div key={alert.id} className='alert_item'>
                                 <p>{alert.message}</p>
                                 {alert.type==='invite'?(
                                     <div className='alert_buttons'>
-                                        <Button text='수락' type='POSITIVE' onClick={()=>onAccept(alert)}/>
-                                        <Button text='거절' type='NEGATIVE' onClick={()=>onDecline(alert)}/>
+                                        <Button text='수락' type='POSITIVE' onClick={()=>handleAccept(alert)}/>
+                                        <Button text='거절' type='NEGATIVE' onClick={()=>handleDecline(alert)}/>
                                     </div>
                                 ):(
                                     <div className='alert_buttons'>
-                                        <Button text='닫기' type='POSITIVE' onClick={()=>onClose(alert)}/>
+                                        <Button text='닫기' type='NEGATIVE' onClick={()=>handleCloseAlert(alert)}/>
                                     </div>
                                 )}
                             </div>

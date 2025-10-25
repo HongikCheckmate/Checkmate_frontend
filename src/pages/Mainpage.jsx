@@ -1,4 +1,3 @@
-import axios from 'axios'
 import './Mainpage.css'
 import Header from "../components/Header"
 import RoomList from "../components/RoomList"
@@ -25,20 +24,7 @@ const Mainpage = ({isLoggedIn,user,onLogin,onLogout}) => {
     
     const closeModal = () => setIsMakeGroupOpen(false)
     
-  
-  //   useEffect(()=>{
-  //     const fetchGroups=async()=>{
-  //     try{
-  //         const response = await axios.get('http://localhost:8080/api/groups')
-  //         setGroups(response.data);
-  //     } catch (error) {
-  //       console.error("그룹 목록 불러오기 실패:", error);
-  //     }
-  //   }
 
-  //   fetchGroups()
-  // }, [])
-  //백엔드 연동 시 사용
   
     
     return (

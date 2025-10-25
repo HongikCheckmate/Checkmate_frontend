@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from './Button'
 import './Rooms.css'
 
-const Rooms = ({ id, room_name, room_manager, members, hiden, room_info, isLoggedIn}) => {
+const Rooms = ({ id, room_name, room_manager, members, hidden, room_info, isLoggedIn}) => {
     const [isOpen, setIsOpen] = useState(false)
     const navigate=useNavigate()
     const handleRoomClick=(e)=>{
@@ -31,8 +31,8 @@ const Rooms = ({ id, room_name, room_manager, members, hiden, room_info, isLogge
                     {members.length}명
                 </div>
 
-                <div className='hiden_or_not'>
-                    {hiden === true ? '비공개' : '공개'}
+                <div className='hidden_or_not'>
+                    {hidden === true ? '비공개' : '공개'}
                 </div>
 
                 <div className='room_info'>

@@ -1,13 +1,28 @@
 import Modal from "react-modal"
+import { useEffect,useState } from "react"
 import Button from "./Button"
+import axios from "axios"
 import './Missionstatus.css'
 
-const MissionStatus = ({ isOpen, onClose, mission }) => {
-  const mockMembers = [
-    { nickname: "1", status: "none" },
-    { nickname: "2", status: "submitted" },
-    { nickname: "3", status: 'confirmed' },
-  ]
+const MissionStatus = ({ isOpen, onClose, mission,groupId }) => {
+  const [members,setMembers]=useState([])
+  const token=localStorage.getItem('accessToken')
+
+  useEffect(() => {
+    if (!isOpen) return
+    const fetchStatus = async () => {
+      try {
+        const res = await axios.get(
+          `http://checkmate.kimbepo.xyz/api/groups/${groupId}/missions/${mission.id}/status`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        setMembers(res.data)
+      } catch (err) {
+        console.error("미션 상태 조회 실패:", err)
+      }
+    }
+    fetchStatus()
+  }, [isOpen, mission.id, groupId, token])
 
   const viewStatus=(status)=>{
     switch(status){
@@ -36,7 +51,7 @@ const MissionStatus = ({ isOpen, onClose, mission }) => {
             </tr>
         </thead>
         <tbody>
-            {mockMembers.map((m, idx) => (
+            {members.map((m, idx) => (
                 <tr key={idx}>
                     <td>{m.nickname}</td> 
                     <td>{viewStatus(m.status)}</td>

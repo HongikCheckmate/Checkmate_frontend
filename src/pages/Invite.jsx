@@ -1,57 +1,55 @@
-//테스트용. 검토요망
-
-
 import Modal from 'react-modal'
 import './Invite.css'
 import { useState } from 'react'
 import Button from '../components/Button'
 
 
-const mockMembers = ['alice', 'bob', 'charlie', 'david']
-
-const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [] }) => {
-  const [searchNickname, setSearchNickname] = useState('');
-  const [searchNicknameResult, setSearchNicknameResult] = useState([]);
+const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId, token }) => {
+  const [searchNickname, setSearchNickname] = useState('')
+  const [searchNicknameResult, setSearchNicknameResult] = useState([])
 
   const enterForSearch = (e) => {
     if (e.key === 'Enter') {
-      handleSearch();
+      handleSearch()
     }
-  };
+  }
 
   const handleSearch = async () => {
-    if (!searchNickname) return;
+    if (!searchNickname) return
 
     try {
-      const response = await fetch(`/api/search?nickname=${searchNickname}`);
-      const data = await response.json();
-      setSearchNicknameResult(data);
-    } catch (err) {
-      console.error('검색 중 문제가 발생했습니다. ', err);
-    }
-  };
+      const response = await fetch(`http://checkmate.kimbepo.xyz/api/search?nickname=${searchNickname}`,{
+      headers:{
+        'Authorization':`Bearer ${token}`,
+      },
+    })
+    if (!response.ok) throw new Error('검색 실패')
+    const data=await response.json()
+    setSearchNicknameResult(data)
+  } catch(err){
+    alert('검색 중 오류가 발생했습니다')
+  }
+}
 
   const handleInvite = async (nickname) => {
     try {
-      const response = await fetch('/api/invite', {
+      const response = await fetch('http://checkmate.kimbepo.xyz/api/invite', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization':`Bearer ${token}`
         },
-        body: JSON.stringify({ nickname }),
-      });
+        body: JSON.stringify({ groupId, nickname }),
+      })
 
       if (response.ok) {
-        alert(`${nickname} 님에게 초대장을 보냈습니다!`);
-        if (onSelectMember) {
-          onSelectMember(nickname);
-        }
+        alert(`${nickname} 님에게 초대장을 보냈습니다!`)
+        onSelectMember?.(nickname)
       } else {
-        alert('초대 실패');
+        alert('초대 실패')
       }
     } catch (err) {
-      console.error('초대 중 오류:', err);
-      alert('오류가 발생했습니다.');
+      alert('오류가 발생했습니다.')
     }
   };
 
@@ -81,12 +79,12 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [] }) => {
                 onClick={() => handleInvite(user.nickname)}
               />
             </div>
-          );
+          )
         })}
       </div>
 
       <Button className="closebutton" text="닫기" onClick={onClose} type="NEGATIVE" />
     </Modal>
-  );
-};
+  )
+}
 export default Invite

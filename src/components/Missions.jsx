@@ -1,8 +1,8 @@
 import { Link} from "react-router-dom"
 import { useState } from "react"
-import "./Missions.css"
 import Button from "./Button"
 import Missionstatus from "./Missionstatus"
+import "./Missions.css"
 
 const Missions= ({ missions,subId }) => {
 
@@ -57,6 +57,7 @@ const Missions= ({ missions,subId }) => {
         isOpen={isModalOpen}
         onClose={()=>setIsModalOpen(false)}
         mission={selectedMission}
+        groupId={subId}
       />
     )}
     </div>

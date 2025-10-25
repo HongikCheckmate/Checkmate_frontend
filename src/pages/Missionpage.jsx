@@ -1,48 +1,96 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { useParams,useNavigate } from "react-router-dom"
-import "./Missionpage.css"
 import Button from "../components/Button"
+import axios from "axios"
+import "./Missionpage.css"
+
 
 const Missionpage = () => {
   const { subId, missionId } = useParams()
   const navigate=useNavigate()
+  const token=localStorage.getItem('accessToken')
 
-  const mockMission = {
-    id:missionId,
-    title: "백준 100문제 풀기",
-    description: "백준을 100문제 풀어오세요",
-    start: "2025-08-01",
-    end: "2025-08-10",
-    submitted: false, 
-  }
-
+  const [mission,setMission]=useState(null)
   const [content, setContent] = useState("")
   const [file, setFile] = useState(null)
-  const [submitted, setSubmitted] = useState(mockMission.submitted)
+  const [submitted, setSubmitted] = useState(false)
+
+    useEffect(() => {
+    const fetchMission = async () => {
+      try {
+        const res = await axios.get(
+          `http://checkmate.kimbepo.xyz/api/groups/${subId}/missions/${missionId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        setMission(res.data)
+        setSubmitted(res.data.submitted)
+      } catch (err) {
+        console.error("미션 불러오기 실패:", err)
+      }
+    }
+    fetchMission()
+  }, [subId, missionId, token])
 
   const handleFileChange = (e) => setFile(e.target.files[0])
 
-  const handleSubmit = () => {
+  const handleSubmit = async()=>{
+    if(!content&&!file){
+      alert('내용 또는 파일을 첨부하세요')
+      return
+    }
+
+    const formData=new FormData()
+    formData.append('content',content)
+    if (file) formData.append('file',file)
+      try{
+        await axios.post(
+          `http://checkmate.kimbepo.xyz/api/groups/${subId}/missions/${missionId}/submit`,
+          formData,
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        alert("제출 완료!")
+        setSubmitted(true)
+        } catch (err) {
+          console.error("미션 제출 실패:", err)
+        }
+      }
+
+  const handleEdit = async () => {
     if (!content && !file) {
       alert("내용 또는 파일을 첨부해야 합니다.")
       return
     }
-    setSubmitted(true)
-    alert("제출 완료!")
-  }
 
-  const handleEdit = () => {
-    alert("수정 완료!")
+    const formData = new FormData()
+    formData.append('content', content)
+    if (file) formData.append('file', file)
+
+    try {
+      await axios.put(
+        `http://checkmate.kimbepo.xyz/api/groups/${subId}/missions/${missionId}/submit`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      alert("수정 완료!")
+      setSubmitted(true)
+    } catch (err) {
+      alert("수정 중 오류가 발생했습니다.")
+    }
   }
 
   return (
     <div className="missionpage_container">
-      <h2>{mockMission.title}</h2>
+      <h2>{mission.title}</h2>
 
       <div className="mission_info">
-        <p><strong>설명:</strong> {mockMission.description}</p>
-        <p><strong>시작일:</strong> {mockMission.start}</p>
-        <p><strong>마감일:</strong> {mockMission.end}</p>
+        <p><strong>설명:</strong> {mission.description}</p>
+        <p><strong>시작일:</strong> {mission.start}</p>
+        <p><strong>마감일:</strong> {mission.end}</p>
         <p><strong>제출 여부:</strong> {submitted ? "제출 완료" : "미제출"}</p>
       </div>
 
@@ -59,7 +107,7 @@ const Missionpage = () => {
         {!submitted ? (
           <Button type='POSITIVE' text='제출하기' onClick={handleSubmit}/>
         ) : (
-          <Button type='NEGATIVE' text='수정하기' onClick={handleEdit}/>
+          <Button type='POSITIVE' text='수정하기' onClick={handleEdit}/>
         )}
         <Button text='목록으로' onClick={()=>navigate(`/sub/${subId}`)}/> 
       </div>
