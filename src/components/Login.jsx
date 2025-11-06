@@ -1,6 +1,7 @@
 import './Login.css'
 import Button from './Button'
 import Signup from './Signup'
+import Sociallogin from './Sociallogin'
 import { useState } from 'react'
 import useSignin from './Signin'
 
@@ -20,9 +21,9 @@ const Login = ({ onLogin }) => {
       onLogin({
         username,
         nickname: data.nickname,
-        token: data.token,
+        accessToken: data.accessToken,
       })
-      localStorage.setItem('token', data.token)
+      localStorage.setItem('accessToken', data.accessToken)
     } catch (err) {
       alert('로그인 정보가 바르지 않습니다')
     }
@@ -33,6 +34,8 @@ const Login = ({ onLogin }) => {
       handleLogin()
     }
   }
+
+
 
   return (
     <div className="login">
@@ -60,6 +63,7 @@ const Login = ({ onLogin }) => {
         onClick={handleLogin}
       />
 
+      <Sociallogin />
       <div className="login-links">
         <a href="/find_username" className="login-link">
           아이디 찾기
@@ -70,7 +74,10 @@ const Login = ({ onLogin }) => {
         <a href="#" onClick={openModal} className="login-link">
           회원가입
         </a>
-
+        <div classname='social-login-section'>
+          
+  
+        </div>
         <Signup isOpen={isModalOpen} onClose={closeModal} />
       </div>
     </div>

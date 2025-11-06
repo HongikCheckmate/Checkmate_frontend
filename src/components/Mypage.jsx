@@ -9,10 +9,9 @@ import './Mypage.css'
 const Mypage=({isOpen, onClose})=>{
     const [isEditing,setIsEditing]=useState(false)
     const [userData, setUserData]=useState({
-        id:'',
-        password:'',
+        username:'',
         email:'',
-        phone:'',
+        phone_number:'',
         nickname:'',
         groups:[]
     })
@@ -23,7 +22,7 @@ const Mypage=({isOpen, onClose})=>{
         if (isOpen) {
             const fetchUserData=async()=>{
                 try{
-                    const res=await axios.get('http://checkmate.kimbepo.xyz/api/user/me',{
+                    const res=await axios.get('https://checkmate.kimbepo.xyz/api/user/mypage',{
                         headers: {Authorization: `Bearer ${token}`}
                     })
                     setUserData(res.data)
@@ -44,14 +43,14 @@ const Mypage=({isOpen, onClose})=>{
         if (isEditing) {
             try{
                 await axios.put(
-                    'http://checkmate.kimbepo.xyz/api/user/me',
+                    'https://checkmate.kimbepo.xyz/api/user/mypage',
                     {
                         password: tempData.password || undefined,
-                        phone: tempData.phone,
+                        phone_number: tempData.phone_number,
                         nickname:tempData.nickname
                     },
                     {
-                        headers:{Authorization:`Bearer $${token}`}
+                        headers:{Authorization:`Bearer ${token}`}
                     }
                 )
                 setUserData(tempData)
@@ -76,31 +75,22 @@ const Mypage=({isOpen, onClose})=>{
 
                     <div className="mypage_info">
                     <label>아이디: </label>
-                    <span>{userData.id}</span>
+                    <span>{userData.username}</span>
+
+                    <label>비밀번호:</label>
+                    <span>*********</span>
 
                     <label>이메일: </label>
                     <span>{userData.email}</span>
 
-                    <label>비밀번호:</label>
-                    {isEditing ? (
-                        <input
-                        type="password"
-                        value={tempData.password || ""}
-                        placeholder="새 비밀번호를 입력하세요"
-                        onChange={(e) => handleChange("password", e.target.value)}
-                        />
-                    ) : (
-                        <span>*********</span>
-                    )}
-
                     <label>전화번호: </label>
                     {isEditing ? (
                         <input
-                        value={tempData.phone || ""}
-                        onChange={(e) => handleChange("phone", e.target.value)}
+                        value={tempData.phone_number || ""}
+                        onChange={(e) => handleChange("phone_number", e.target.value)}
                         />
                     ) : (
-                        <span>{userData.phone}</span>
+                        <span>{userData.phone_number}</span>
                     )}
 
                     <label>닉네임: </label>

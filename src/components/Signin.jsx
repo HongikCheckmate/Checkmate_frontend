@@ -21,8 +21,15 @@ const useSignin = () => {
                 const msg = data?.message||data?.error||'로그인 실패'
                 throw new Error(msg)
             }
+            
 
-            localStorage.setItem('token',data.token)
+            if (data?.accessToken){
+                localStorage.setItem('accessToken',data.accessToken)
+            }
+
+            if (data?.refreshToken){
+                localStorage.setItem('refreshToken',data.refreshToken)
+            }
             return data
         } catch (err) {
             console.error('Login 요청 중 에러발생:', err)

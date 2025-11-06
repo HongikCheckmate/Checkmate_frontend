@@ -1,6 +1,5 @@
 import Modal from 'react-modal'
 import axios from 'axios'
-import Invite from './Invite'
 import { useState,useEffect,useContext } from 'react'
 import './Makegroup.css'
 import Button from '../components/Button'
@@ -8,31 +7,14 @@ import {RoomDispatchContext} from '../App'
 
 const Makegroup = ({ isOpen, onClose }) => {
   const [input, setInput] = useState({
-    room_Name: '',
+    room_name: '',
     room_info: '',
-    hiden: true,
+    hidden: true,
   })
-
-
-  const [isInviteOpen, setIsInviteOpen] = useState(false) //invite팝업창 관리
-  const [selectedMembers, setSelectedMembers] = useState([])  // 
 
   const refreshGroups=useContext(RoomDispatchContext)
   const token=localStorage.getItem('accessToken')
   const currentUser=JSON.parse(localStorage.getItem('user'))?.nickname||''
-  const handleInviteClick = () => {
-    setIsInviteOpen(true)
-  }
-
-  const handleInviteClose = () => {
-    setIsInviteOpen(false)
-  }
-
-  const handleMemberSelect = (member) => {
-    if (!selectedMembers.includes(member)) {
-      setSelectedMembers([...selectedMembers, member])
-    }
-  }
   
   const handleSubmit=async()=>{
 
@@ -46,11 +28,10 @@ const Makegroup = ({ isOpen, onClose }) => {
     }
 
     try{
-      await axios.post("http://checkmate.kimbepo.xyz/api/group",{
+      await axios.post("https://checkmate.kimbepo.xyz/api/group/create",{
         room_name: input.room_name,
         room_info:input.room_info,
         hidden:input.hidden,
-        members:selectedMembers,//서버에서 members:[String] 형식을 받아야됨
         room_manager:currentUser,
       },
       {
@@ -69,14 +50,13 @@ const Makegroup = ({ isOpen, onClose }) => {
 
    useEffect(()=>{
     if (!isOpen){
-      setSelectedMembers([])
       setInput({room_name:'',room_info:'',hidden:true})
     }
   },[isOpen])
   
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}  className="makegroup_modal" overlayClassName="makegroup_overlay">
-      <Invite isOpen={isInviteOpen} onClose={handleInviteClose} onSelectMember={handleMemberSelect} selectedMembers={selectedMembers}/>
+      
       <div className="makegroup_container">
         <h2>새 그룹 만들기</h2>
 
@@ -92,23 +72,12 @@ const Makegroup = ({ isOpen, onClose }) => {
         
           <label>공개 여부</label>
           <select
-            value={input.hidden}
-            onChange={(e) => setInput({ ...input, hidden: e.target.value==='TRUE' })}
+            value={input.hidden?'FALSE':'TRUE'}
+            onChange={(e) => setInput({ ...input, hidden: e.target.value==='FALSE' })}
           >
-            <option value="TRUE">공개</option>
-            <option value="FALSE">비공개</option>
+            <option value="TRUE">비공개</option>
+            <option value="FALSE">공개</option>
           </select>
-
-          
-          <label>멤버</label>
-          <Button onClick={handleInviteClick} type="POSITIVE" text='멤버 검색'/>
-          <div className="member_list">
-            {selectedMembers.length === 0 && <p>선택된 멤버 없음</p>}
-            {selectedMembers.map((member, idx) => (
-              <div key={idx} className="member_item">{member}</div>
-            ))}
-
-          </div>
         
           <label>설명</label>
           <textarea

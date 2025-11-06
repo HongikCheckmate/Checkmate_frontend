@@ -7,38 +7,32 @@ import Missionpage from './pages/Missionpage'
 import Makegroup from "./pages/Makegroup"
 import Signup from "./components/Signup"
 import Invite from './pages/Invite'
-
-//id,room_name,room_manager,members,hidden,room_info 받아오기
-/*data: 상태 받아옴(useReducer 사용해 방 상태 받아옴)
-roomstatecontext로 room의 정보 하위 컴포넌트까지 뿌려줌
-*/
+import OAuthCallback from './components/Oauthcallback'
+import SocialSignup from './components/Socialsignup'
 
 export const RoomStateContext=createContext()
 export const RoomDispatchContext=createContext()
-
 
 function App() {
 
   const [isLoggedIn, setIsLoggedIn]=useState(false)
   const [user,setUser]=useState(null)
-
-  const [groups,setGroups]=useState([]);
+  const [groups,setGroups]=useState([])
 
   const fetchGroups=async()=>{
     try{
       const token=localStorage.getItem('accessToken')
-      const res=await axios.get("https://checkmate.kimbepo.xyz/api/group",{
+      const res=await axios.get("https://checkmate.kimbepo.xyz/api/group/search",{
         headers:{
           Authorization:`Bearer ${token}`,
         },
-      }) //서버 api 경로
-      setGroups(res.data)
+      })
+      setGroups(Array.isArray(res.data)?res.data:[])
     } catch(err){
       console.error("그룹 불러오기 실패",err)
+      setGroups([])
     }
   }
-
-
 
   useEffect(()=>{
     const savedUser=localStorage.getItem('user')
@@ -53,9 +47,11 @@ function App() {
   },[])
 
   const handleLogin=(userInfo,token)=>{
-    setUser(userInfo)
+
+    const userObject=typeof userInfo ==='string'?{nickname:userInfo}:userInfo
+    setUser(userObject)
     setIsLoggedIn(true)
-    localStorage.setItem('user',JSON.stringify(userInfo))
+    localStorage.setItem('user',JSON.stringify(userObject))
     localStorage.setItem('accessToken',token)
     fetchGroups()
   }
@@ -67,23 +63,22 @@ function App() {
     localStorage.removeItem('accessToken')
   }
 
-
   return (
     <RoomDispatchContext.Provider value={fetchGroups}>
       <RoomStateContext.Provider value={groups}>
-          
-          <Routes>
-            <Route path="/" element={<Mainpage isLoggedIn={isLoggedIn} user={user} onLogin={handleLogin} onLogout={handleLogout}/>} />
-            <Route path="/sub/:subId" element={<Subpage isLoggedIn={isLoggedIn} user={user} onLogin={handleLogin} onLogout={handleLogout}/>} />
-            <Route path="/sub/:subId/mission/:missionId" element={<Missionpage/>}/>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/group" element={<Makegroup />} />
-            <Route path="/invite" element={<Invite />} />
-            {/* <Route path="*" element={<Notfound />}/> */}
-          </Routes>
-        
+        <Routes>
+          <Route path="/" element={<Mainpage isLoggedIn={isLoggedIn} user={user} onLogin={handleLogin} onLogout={handleLogout}/>} />
+          <Route path="/sub/:subId" element={<Subpage isLoggedIn={isLoggedIn} user={user} onLogin={handleLogin} onLogout={handleLogout}/>} />
+          <Route path="/sub/:subId/mission/:missionId" element={<Missionpage/>}/>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/group" element={<Makegroup />} />
+          <Route path="/invite" element={<Invite />} />
+          <Route path="/oauth/callback" element={<OAuthCallback />} />
+          <Route path="/social-signup" element={<SocialSignup />} />
+        </Routes>
       </RoomStateContext.Provider>
     </RoomDispatchContext.Provider>
   )
 }
+
 export default App

@@ -2,6 +2,7 @@ import Modal from 'react-modal'
 import { useState, useEffect } from 'react'
 import './Signup.css'
 import Button from './Button'
+import Sociallogin from './Sociallogin'
 Modal.setAppElement('#root');
 
 
@@ -85,6 +86,9 @@ const Signup=({isOpen,onClose})=>{
 
             <div className='inputs'>
 
+                <Sociallogin />
+
+                <br/>
                 <div className="input-row">
                 <label>아이디: </label>
                 <input 
