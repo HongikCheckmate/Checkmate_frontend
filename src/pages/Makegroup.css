@@ -1,70 +1,93 @@
 .makegroup_overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .makegroup_modal {
-    background: white;
-    border-radius: 10px;
-    padding: 30px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    outline: none;
-  }
-  
-  .makegroup_container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .makegroup_info {
-    width: 100%;
-    margin: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .makegroup_info label {
-    margin-top: 20px;
-    margin-bottom:8px;
-    font-weight: bold;
-  }
-  
-  .makegroup_info input,
-  .makegroup_info textarea {
-    width: 90%;
-    padding: 10px;
-    font-size: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .makegroup_info textarea {
-    height: 100px;
-    resize: none;
-  }
-  
-  .button_group {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .makegroup_info select{
-    width:auto;
-    padding: 10px;
-    font-size: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.makegroup_modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  outline: none;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.makegroup_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.makegroup_container h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.makegroup_info {
+  width: 100%;
+  margin: 10px 0 25px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.makegroup_info label {
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #333;
+}
+
+.makegroup_info input,
+.makegroup_info textarea,
+.makegroup_info select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.makegroup_info input:focus,
+.makegroup_info textarea:focus,
+.makegroup_info select:focus {
+  border-color: #4e8df5;
+  outline: none;
+}
+
+.makegroup_info textarea {
+  height: 90px;
+  resize: none;
+}
+
+.makegroup_info select {
+  width: 50%;
+  cursor: pointer;
+}
+
+.password-field {
+  animation: fadeIn 0.3s ease;
+}
+
+.button_group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+

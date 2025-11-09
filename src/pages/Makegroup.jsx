@@ -7,9 +7,10 @@ import {RoomDispatchContext} from '../App'
 
 const Makegroup = ({ isOpen, onClose }) => {
   const [input, setInput] = useState({
-    room_name: '',
-    room_info: '',
+    name: '',
+    description: '',
     hidden: true,
+    password:''
   })
 
   const refreshGroups=useContext(RoomDispatchContext)
@@ -22,17 +23,23 @@ const Makegroup = ({ isOpen, onClose }) => {
       alert('로그인 후 이용 가능합니다')
     }
 
-    if(!input.room_name){
+    if(!input.name.trim()){
       alert('그룹 이름을 입력하세요')
       return
     }
 
+    if(input.hidden && !input.password.trim()){
+      alert('비공개 그룹의 경우 비밀번호를 입력하세요')
+      return
+    }
+
     try{
-      await axios.post("https://checkmate.kimbepo.xyz/api/group/create",{
-        room_name: input.room_name,
-        room_info:input.room_info,
+      await axios.post("https://checkmate.kimbepo.xyz/group/create",{
+        name: input.name,
+        description:input.description,
         hidden:input.hidden,
-        room_manager:currentUser,
+        roomManager:currentUser,
+        ...(input.hidden&&{password:input.password})
       },
       {
         headers:{Authorization:`Bearer ${token}`}
@@ -40,7 +47,7 @@ const Makegroup = ({ isOpen, onClose }) => {
     )
       refreshGroups?.()
       onClose()
-      setInput({room_name:'',room_info:'',hidden:true})
+      setInput({name:'',description:'',hidden:true,password:''})
     }catch(err){
       console.error("그룹 생성 실패",err)
       alert('그룹 생성 오류')
@@ -50,7 +57,7 @@ const Makegroup = ({ isOpen, onClose }) => {
 
    useEffect(()=>{
     if (!isOpen){
-      setInput({room_name:'',room_info:'',hidden:true})
+      setInput({name:'',description:'',hidden:true,password:''})
     }
   },[isOpen])
   
@@ -65,25 +72,37 @@ const Makegroup = ({ isOpen, onClose }) => {
           <label>그룹 이름</label>
           <input
             type="text"
-            value={input.room_name}
+            value={input.name}
             placeholder='그룹 이름을 입력하세요'
-            onChange={(e) => setInput({ ...input, room_name: e.target.value })}
+            onChange={(e) => setInput({ ...input, name: e.target.value })}
           />
         
           <label>공개 여부</label>
           <select
-            value={input.hidden?'FALSE':'TRUE'}
-            onChange={(e) => setInput({ ...input, hidden: e.target.value==='FALSE' })}
+            value={input.hidden?'TRUE':'FALSE'}
+            onChange={(e) => setInput({ ...input, hidden: e.target.value==='TRUE' })}
           >
             <option value="TRUE">비공개</option>
             <option value="FALSE">공개</option>
           </select>
+
+          {input.hidden && (
+            <>
+              <label>비밀번호</label>
+              <input
+                type="password"
+                value={input.password}
+                placeholder='그룹 비밀번호를 입력하세요'
+                onChange={(e) => setInput({ ...input, password: e.target.value })}
+              />
+            </>
+          )}
         
           <label>설명</label>
           <textarea
             placeholder='그룹 설명을 입력하세요'
-            value={input.room_info}
-            onChange={(e) => setInput({ ...input, room_info: e.target.value })}
+            value={input.description}
+            onChange={(e) => setInput({ ...input, description: e.target.value })}
           />
         </div>
         
