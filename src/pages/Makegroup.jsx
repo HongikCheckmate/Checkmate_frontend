@@ -15,7 +15,7 @@ const Makegroup = ({ isOpen, onClose }) => {
 
   const refreshGroups=useContext(RoomDispatchContext)
   const token=localStorage.getItem('accessToken')
-  const currentUser=JSON.parse(localStorage.getItem('user'))?.nickname||''
+  const currentUser=JSON.parse(localStorage.getItem('user'))?.username||''
   
   const handleSubmit=async()=>{
 
@@ -34,7 +34,7 @@ const Makegroup = ({ isOpen, onClose }) => {
     }
 
     try{
-      await axios.post("https://checkmate.kimbepo.xyz/group/create",{
+      const res = await axios.post("https://checkmate.kimbepo.xyz/group/create",{
         name: input.name,
         description:input.description,
         hidden:input.hidden,
@@ -45,6 +45,8 @@ const Makegroup = ({ isOpen, onClose }) => {
         headers:{Authorization:`Bearer ${token}`}
       }
     )
+
+      
       refreshGroups?.()
       onClose()
       setInput({name:'',description:'',hidden:true,password:''})
