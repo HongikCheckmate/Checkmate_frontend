@@ -33,16 +33,22 @@ const Makegroup = ({ isOpen, onClose }) => {
       return
     }
 
+    console.log("token:",token)
+    console.log("Authorization 헤더:", `Bearer ${token}`)
+
     try{
-      const res = await axios.post("https://checkmate.kimbepo.xyz/group/create",{
+      await axios.post("https://checkmate.kimbepo.xyz/group/create",{
         name: input.name,
         description:input.description,
         hidden:input.hidden,
         roomManager:currentUser,
-        ...(input.hidden&&{password:input.password})
+        password: input.hidden ? input.password : ''
       },
       {
-        headers:{Authorization:`Bearer ${token}`}
+        headers:{
+          Authorization:`Bearer ${token}`,
+          'Content-Type':'application/json'
+        }
       }
     )
 
@@ -51,8 +57,10 @@ const Makegroup = ({ isOpen, onClose }) => {
       onClose()
       setInput({name:'',description:'',hidden:true,password:''})
     }catch(err){
+      console.log(err.response.data)
       console.error("그룹 생성 실패",err)
       alert('그룹 생성 오류')
+
     }
   }
 
@@ -81,11 +89,11 @@ const Makegroup = ({ isOpen, onClose }) => {
         
           <label>공개 여부</label>
           <select
-            value={input.hidden?'TRUE':'FALSE'}
-            onChange={(e) => setInput({ ...input, hidden: e.target.value==='TRUE' })}
+            value={input.hidden ? 'true' : 'false'}
+            onChange={(e) => setInput({ ...input, hidden: e.target.value==='true' })}
           >
-            <option value="TRUE">비공개</option>
-            <option value="FALSE">공개</option>
+            <option value="true">비공개</option>
+            <option value="false">공개</option>
           </select>
 
           {input.hidden && (
