@@ -6,7 +6,7 @@ const RoomHeader=()=>{
             <div className='room_name'>그룹 이름</div>
             <div className='room_manager'>방장</div>
             <div className='members_num'>멤버 수</div>
-            <div className='hiden_or_not'>공개 여부</div>
+            <div className='hidden_or_not'>공개 여부</div>
             <div className='room_info'>설명</div>
         </div>
     )

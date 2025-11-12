@@ -19,7 +19,7 @@ const RoomList=({isLoggedIn})=>{
                                 id={group.id}
                                 room_name={group.room_name}
                                 room_manager={group.room_manager}
-                                members={group.members}
+                                members={Array.isArray(group.members)?group.members:[]}
                                 hidden={group.hidden}  
                                 room_info={group.room_info}
                                 isLoggedIn={isLoggedIn}

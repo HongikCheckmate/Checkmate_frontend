@@ -28,7 +28,7 @@ const Rooms = ({ id, room_name, room_manager, members, hidden, room_info, isLogg
                 </div>
 
                 <div className='members_num'>
-                    {members.length}명
+                    {Array.isArray(members) ? members.length : (typeof members === 'number' ? members : 0)}명
                 </div>
 
                 <div className='hidden_or_not'>

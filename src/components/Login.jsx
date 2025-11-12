@@ -74,7 +74,7 @@ const Login = ({ onLogin }) => {
         <a href="#" onClick={openModal} className="login-link">
           회원가입
         </a>
-        <div classname='social-login-section'>
+        <div className='social-login-section'>
           
   
         </div>

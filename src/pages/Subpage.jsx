@@ -26,7 +26,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
    useEffect(() => {
     const fetchGroup = async () => {
       try {
-        const res = await axios.get(`http://checkmate.kimbepo.xyz/api/groups/${subId}`, {
+        const res = await axios.get(`https://checkmate.kimbepo.xyz/api/groups/${subId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         setGroup(res.data)

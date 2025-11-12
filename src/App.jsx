@@ -19,16 +19,30 @@ function App() {
   const [user,setUser]=useState(null)
   const [groups,setGroups]=useState([])
 
-  const fetchGroups=async()=>{
+  const fetchGroups=async(queryString='')=>{
     try{
       const token=localStorage.getItem('accessToken')
       const res=await axios.get("https://checkmate.kimbepo.xyz/api/group/search",{
+        params:{
+          query:queryString
+        },
         headers:{
-          Authorization:`Bearer ${token}`,
+          Authorization:token?`Bearer ${token}`: undefined,
         },
       })
-      setGroups(Array.isArray(res.data)?res.data:[])
-    } catch(err){
+
+      const dataArray=Array.isArray(res.data.content)?res.data.content:[]
+      const mapped = dataArray.map(item=>({
+        id: item.id,
+        room_name: item.name ?? '',
+        room_manager: item.leaderNickname ?? '',
+        room_info: item.description ?? '',
+        members: Array(item.memberCount ?? 0).fill(null),
+        hidden: item.hidden ?? false,
+        _raw: item,
+      }))
+      setGroups(mapped)
+      } catch(err){
       console.error("그룹 불러오기 실패",err)
       setGroups([])
     }
@@ -41,9 +55,9 @@ function App() {
       setUser(JSON.parse(savedUser))
       setIsLoggedIn(true)
     }
-    if (token){
-      fetchGroups()
-    }
+    
+    fetchGroups()
+    
   },[])
 
   const handleLogin=(userInfo,token)=>{
@@ -61,6 +75,7 @@ function App() {
     setIsLoggedIn(false)
     localStorage.removeItem('user')
     localStorage.removeItem('accessToken')
+    fetchGroups()
   }
 
   return (
