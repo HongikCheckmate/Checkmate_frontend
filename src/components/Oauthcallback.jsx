@@ -28,4 +28,4 @@ const OAuthCallback = () => {
   return <div>소셜 로그인 중입니다...</div>;
 };
 
-export default OAuthCallback;
+export default OAuthCallback

@@ -3,7 +3,8 @@ import { FaGoogle, FaGithub } from 'react-icons/fa'
 
 const Sociallogin = () => {
   const handleSocialLogin = (provider) => {
-    window.location.href = `https://checkmate.kimbepo.xyz/oauth2/authorization/${provider}`
+    
+    window.location.href = `https://checkmate.kimbepo.xyz/oauth2/authorization/${provider}?redirect_url=http://localhost:5173/oauth/callback`
   }
 
   return (
