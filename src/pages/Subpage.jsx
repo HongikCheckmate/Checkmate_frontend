@@ -106,7 +106,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
                   <strong>방장:</strong> {group.room_manager}
                 </p>
                 <p>
-                  <strong>인원:</strong> {group.members.length}명
+                  <strong>인원:</strong> {members.length}명
                 </p>
                 <p className="group_desc">
                   {group.room_info}

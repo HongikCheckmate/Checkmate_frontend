@@ -1,5 +1,5 @@
-import { useState,useEffect } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Button from "./Button"
 import "./Socialsignup.css"
 
@@ -11,18 +11,6 @@ const SocialSignup = () => {
   })
 
   const navigate = useNavigate()
-  const location = useLocation()
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search)
-    const accessToken = params.get("accessToken")
-    const refreshToken = params.get("refreshToken")
-
-    if (accessToken && refreshToken) {
-      localStorage.setItem("accessToken", accessToken)
-      localStorage.setItem("refreshToken", refreshToken)
-    }
-  }, [location])
 
   const handleChange = (e) => {
     setInfo({

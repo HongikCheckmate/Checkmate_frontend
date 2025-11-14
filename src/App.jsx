@@ -88,7 +88,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/group" element={<Makegroup />} />
           <Route path="/invite" element={<Invite />} />
-          <Route path="/oauth/callback" element={<OAuthCallback />} />
+          <Route path="/oauth/callback/" element={<OAuthCallback />} />
           <Route path="/social-signup" element={<SocialSignup />} />
         </Routes>
       </RoomStateContext.Provider>
