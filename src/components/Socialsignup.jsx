@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import Button from "./Button"
 import "./Socialsignup.css"
 
-const SocialSignup = () => {
+const Socialsignup = () => {
   const [info, setInfo] = useState({
     nickname: "",
     email: "",
@@ -85,4 +85,4 @@ const SocialSignup = () => {
   )
 }
 
-export default SocialSignup
+export default Socialsignup

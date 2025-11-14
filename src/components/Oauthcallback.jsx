@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 
-const OAuthCallback = () => {
+const Oauthcallback = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -30,4 +30,4 @@ const OAuthCallback = () => {
   return <div>소셜 로그인 중입니다...</div>
 }
 
-export default OAuthCallback
+export default Oauthcallback

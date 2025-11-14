@@ -21,7 +21,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   // 현재 로그인한 사용자의 닉네임d
   const currentUser = user?.nickname || ""
   const token=localStorage.getItem('accessToken')
-  const isManager = group?.room_manager === currentUser 
+  const isManager = (group?.room_manager || '' === currentUser) 
 
    useEffect(() => {
     const fetchGroup = async () => {
@@ -29,8 +29,23 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
         const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
-        setGroup(res.data)
+
+        const d = res.data
+        
+        const mapped={
+          id: d.id,
+          room_name: d.name,
+          room_info: d.description,
+          room_manager: d.leader?.nickname || "",
+          room_manager_username: d.leader?.username || "",
+          members: d.member || [],
+          missions: d.missions || [],
+        }
+
+        setGroup(mapped)
+        setMembers(mapped.members)
         setGroupMissions(res.data.missions || [])
+        console.log("그룹 정보:", res.data)
       } catch (err) {
         console.error("그룹 정보 불러오기 실패:", err)
       }
@@ -38,20 +53,20 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
     fetchGroup()
   }, [subId, token])
 
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}/members`, {
-          headers: { Authorization: `Bearer ${token}` },
-          params:{sort:'join',reverse: false, page:0, size:20},
-        })
-        setMembers(res.data.users || [])
-      } catch (err) {
-        console.error("멤버 정보 불러오기 실패:", err)
-      }
-    }
-    fetchMembers()
-  }, [subId, token])
+  // useEffect(() => {
+  //   const fetchMembers = async () => {
+  //     try {
+  //       const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}/members`, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //         params:{sort:'join',reverse: false, page:0, size:20},
+  //       })
+  //       setMembers(res.data.users || [])
+  //     } catch (err) {
+  //       console.error("멤버 정보 불러오기 실패:", err)
+  //     }
+  //   }
+  //   fetchMembers()
+  // }, [subId, token])
 
   const handleEditGroup= async(newName, newDesc)=>{
     try{

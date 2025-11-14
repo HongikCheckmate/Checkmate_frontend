@@ -7,8 +7,8 @@ import Missionpage from './pages/Missionpage'
 import Makegroup from "./pages/Makegroup"
 import Signup from "./components/Signup"
 import Invite from './pages/Invite'
-import OAuthCallback from './components/Oauthcallback'
-import SocialSignup from './components/Socialsignup'
+import Oauthcallback from './components/Oauthcallback'
+import Socialsignup from './components/Socialsignup'
 
 export const RoomStateContext=createContext()
 export const RoomDispatchContext=createContext()
@@ -88,8 +88,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/group" element={<Makegroup />} />
           <Route path="/invite" element={<Invite />} />
-          <Route path="/oauth/callback/" element={<OAuthCallback />} />
-          <Route path="/social-signup" element={<SocialSignup />} />
+          <Route path="/oauth/callback" element={<Oauthcallback />} />
+          <Route path="/oauth-signup-info" element={<Socialsignup />} />
         </Routes>
       </RoomStateContext.Provider>
     </RoomDispatchContext.Provider>

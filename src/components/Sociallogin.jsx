@@ -3,7 +3,7 @@ import { FaGoogle, FaGithub } from 'react-icons/fa'
 
 const Sociallogin = () => {
   const handleSocialLogin = (provider) => {
-    const redirectUri = `http://localhost:5173/oauth/callback`
+    const redirectUri = `https://check-mate-web.vercel.app/oauth/callback`
     window.location.href = `https://checkmate.kimbepo.xyz/oauth2/authorization/${provider}?redirect_uri=${redirectUri}`
   }
 
