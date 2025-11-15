@@ -30,7 +30,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   // 현재 로그인한 사용자의 닉네임d
   const currentUser = user?.nickname || ""
   const token=localStorage.getItem('accessToken')
-  const isManager = (group?.room_manager || '' === currentUser) 
+  const isManager = group?.room_manager === currentUser
 
    useEffect(() => {
     const fetchGroup = async () => {
