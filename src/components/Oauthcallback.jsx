@@ -6,6 +6,9 @@ const Oauthcallback = () => {
   const location = useLocation()
 
   useEffect(() => {
+    console.log("현재 URL:", window.location.href);
+    console.log("search params:", location.search);
+
     const params = new URLSearchParams(location.search)
     const accessToken = params.get("accessToken")
     const refreshToken = params.get("refreshToken")

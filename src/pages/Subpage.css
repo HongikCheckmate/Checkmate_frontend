@@ -10,7 +10,7 @@
   justify-content: space-between;
   margin-top: 20px;
   width: 800px;
-  padding: 10px 200px;
+  padding: 10px 200px; 
 }
 
 
@@ -30,6 +30,7 @@
 .group_info {
   flex: 2;
   margin-left: 60px;
+  width: 600px;
 }
 
 .group_info h2 {
@@ -59,4 +60,75 @@
 .subpage_back{
   margin-top: 30px;
   text-align: center;
+}
+
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.member_modal,
+.edit_modal {
+  width: 430px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  outline: none;
+}
+
+.member_list_modal {
+  list-style: none;
+  padding: 0;
+}
+
+.member_item_modal {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit_modal input,
+.edit_modal textarea,
+.edit_modal select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.leader_select {
+  font-size: 15px;
+  padding: 8px;
+}
+
+.modal_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.save_btn {
+  background: #4CAF50;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cancel_btn {
+  background: #aaa;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
 }

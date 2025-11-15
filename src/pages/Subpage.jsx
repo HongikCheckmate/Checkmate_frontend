@@ -7,6 +7,9 @@ import Missionlist from "../components/Missionlist"
 import Invite from "./Invite"
 import axios from "axios"
 import "./Subpage.css"
+import Modal from 'react-modal'
+
+Modal.setAppElement('#root')
 
 const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const { subId } = useParams()
@@ -17,6 +20,12 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const [groupMissions, setGroupMissions]=useState([])
   const [IsInviteOpen, setIsInviteOpen]=useState(false)
   const [members, setMembers]=useState([])
+  const [isMemberModalOpen, setIsMemberModalOpen]=useState(false)
+
+  const [isEditOpen, setIsEditOpen]=useState(false)
+  const [editName, setEditName]=useState("")  
+  const [editDesc, setEditDesc]=useState("")
+  const [newLeader, setNewLeader]=useState("")
 
   // 현재 로그인한 사용자의 닉네임d
   const currentUser = user?.nickname || ""
@@ -45,7 +54,6 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
         setGroup(mapped)
         setMembers(mapped.members)
         setGroupMissions(res.data.missions || [])
-        console.log("그룹 정보:", res.data)
       } catch (err) {
         console.error("그룹 정보 불러오기 실패:", err)
       }
@@ -68,12 +76,29 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   //   fetchMembers()
   // }, [subId, token])
 
-  const handleEditGroup= async(newName, newDesc)=>{
+  const openEditModal=()=>{
+    setEditName(group.room_name)
+    setEditDesc(group.room_info)
+    setNewLeader(group.room_manager_username)
+    setIsEditOpen(true)
+  }
+
+  const closeEditModal=()=>{
+    setIsEditOpen(false)
+  }
+
+  const handleEditGroup= async()=>{
     try{
-      await axios.put(`https://checkmate.kimbepo.xyz/api/group/${subId}`,{
-        name: newName,
-        description: newDesc,
-      },{ headers: { Authorization: `Bearer ${token}` }})
+      const body={}
+      if (editName !== group.room_name) body.name = editName
+      if (editDesc !== group.room_info) body.description = editDesc
+      if (newLeader !== group.room_manager_username) body.leader = newLeader
+
+      console.log("수정 내용:", body)
+      await axios.patch(`https://checkmate.kimbepo.xyz/api/group/${subId}`,
+        body,
+        { headers: { Authorization: `Bearer ${token}` }})
+      
       alert("그룹 정보가 수정되었습니다.")
       window.location.reload()
     }catch(err){
@@ -118,37 +143,27 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
 
                 <h2>{group.room_name}</h2>
                 <p>
+                  <strong>ID:</strong> {group.id}
+                </p>
+                <p>
                   <strong>방장:</strong> {group.room_manager}
                 </p>
                 <p>
-                  <strong>인원:</strong> {members.length}명
+                  <strong>인원:</strong> {members.length}명&nbsp;
+                  <Button text="상세 보기" onClick={()=>setIsMemberModalOpen(true)}/>
                 </p>
                 <p className="group_desc">
                   {group.room_info}
                 </p>
 
                 {isManager && (
-                  <Button text="그룹 정보 수정" type="POSITIVE" onClick={()=>{
-                    const newName=prompt("새 그룹 이름을 입력하세요", group.room_name)
-                    const newDesc=prompt("새 그룹 설명을 입력하세요", group.room_info)
-                    if(newName) handleEditGroup(newName, newDesc)
-                  }}/>
+                  <Button text="그룹 정보 수정" type="POSITIVE" onClick={openEditModal}/>
                 )}
               </div>
             </div>
             
 
-            <h3>멤버 목록</h3>
-            <ul className="member_list">
-              {members.map(m=>(
-                <li key={m.id} className="member_item">
-                  {m.nickname} ({m.username})
-                  {isManager && m.username !==user?.username&&(
-                    <Button text="강퇴" type="NEGATIVE" onClick={()=>handleKickMember(m.username, "관리자에 의한 강퇴")}/>
-                  )}
-                </li>
-              ))}
-            </ul>
+            
 
             
             <Missionlist missions={groupMissions} subId={subId}/>
@@ -169,6 +184,83 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
             </div>
           </div>
         </div>
+
+        <Modal
+            isOpen={isMemberModalOpen}
+            onRequestClose={() => setIsMemberModalOpen(false)}
+            className="member_modal"
+            overlayClassName="modal_overlay"
+          >
+            <h2>멤버 목록</h2>
+            <ul className="member_list_modal">
+              {members.map((m) => (
+                <li key={m.username} className="member_item_modal">
+                  {m.nickname} ({m.username})
+                  {isManager && m.username !== user?.username && (
+                    <Button
+                      text="강퇴"
+                      type="NEGATIVE"
+                      onClick={() =>
+                        handleKickMember(
+                          m.username,
+                          "관리자에 의한 강퇴"
+                        )
+                      }
+                    />
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            <Button
+              text="닫기"
+              type="NEGATIVE"
+              onClick={() => setIsMemberModalOpen(false)}
+            />
+          </Modal>
+
+          <Modal
+            isOpen={isEditOpen}
+            onRequestClose={closeEditModal}
+            className="edit_modal"
+            overlayClassName="modal_overlay"
+          >
+            <h2>그룹 정보 수정</h2>
+
+            <label>그룹 이름</label>
+            <input
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+            />
+
+            <label>그룹 소개</label>
+            <textarea
+              value={editDesc}
+              onChange={(e) => setEditDesc(e.target.value)}
+            />
+
+            <label>방장 위임</label>
+            <select
+              value={newLeader}
+              onChange={(e) => setNewLeader(e.target.value)}
+              className="leader_select"
+            >
+              {members.map((m) => (
+                <option key={m.username} value={m.username}>
+                  {m.nickname} ({m.username})
+                </option>
+              ))}
+            </select>
+
+            <div className="modal_buttons">
+              <button className="save_btn" onClick={handleEditGroup}>
+                저장
+              </button>
+              <button className="cancel_btn" onClick={closeEditModal}>
+                취소
+              </button>
+            </div>
+          </Modal>
       </>
       )}
     </div>
