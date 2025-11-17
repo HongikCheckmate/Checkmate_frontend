@@ -13,6 +13,7 @@ const Mypage=({isOpen, onClose})=>{
         email:'',
         phone_number:'',
         nickname:'',
+        handle:'',
         groups:[]
     })
     const [tempData,setTempData]=useState(userData)
@@ -27,6 +28,8 @@ const Mypage=({isOpen, onClose})=>{
                     })
                     setUserData(res.data)
                     setTempData(res.data)
+                    localStorage.getItem("accessToken")
+                    
                 } catch (err){
                     alert('사용자 정보 불러오기 실패')
                 }
@@ -45,14 +48,17 @@ const Mypage=({isOpen, onClose})=>{
                 await axios.put(
                     'https://checkmate.kimbepo.xyz/api/user/mypage',
                     {
-                        password: tempData.password || undefined,
+                        username: tempData.username,
+                        email: tempData.email,
                         phone_number: tempData.phone_number,
-                        nickname:tempData.nickname
+                        nickname:tempData.nickname,
+                        handle: tempData.handle
                     },
                     {
                         headers:{Authorization:`Bearer ${token}`}
                     }
                 )
+                
                 setUserData(tempData)
                 alert('수정이 완료되었습니다')
             } catch(err){
@@ -81,7 +87,14 @@ const Mypage=({isOpen, onClose})=>{
                     <span>*********</span>
 
                     <label>이메일: </label>
-                    <span>{userData.email}</span>
+                    {isEditing ? (
+                        <input
+                        value={tempData.email || ""}
+                        onChange={(e) => handleChange("email", e.target.value)}
+                        />
+                    ) : (
+                        <span>{userData.email}</span>
+                    )}
 
                     <label>전화번호: </label>
                     {isEditing ? (
@@ -101,6 +114,16 @@ const Mypage=({isOpen, onClose})=>{
                         />
                     ) : (
                         <span>{userData.nickname}</span>
+                    )}
+
+                    <label>백준 아이디: </label>
+                    {isEditing ? (
+                        <input
+                        value={tempData.handle || ""}
+                        onChange={(e) => handleChange("handle", e.target.value)}
+                        />
+                    ) : (
+                        <span>{userData.handle}</span>
                     )}
 
                     <label>내 그룹:</label>

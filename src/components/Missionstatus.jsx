@@ -13,7 +13,7 @@ const MissionStatus = ({ isOpen, onClose, mission,groupId }) => {
     const fetchStatus = async () => {
       try {
         const res = await axios.get(
-          `http://checkmate.kimbepo.xyz/api/groups/${groupId}/missions/${mission.id}/status`,
+          `http://checkmate.kimbepo.xyz/api/group/${groupId}/missions/${mission.id}/status`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
         setMembers(res.data)
