@@ -1,0 +1,63 @@
+.createmission_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.createmission_modal {
+  background: #ffffff;
+  padding: 24px;
+  width: 420px;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  animation: fadeIn 0.25s ease;
+}
+
+.createmission_modal h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.createmission_modal label {
+  display: block;
+  margin-top: 14px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.createmission_modal input,
+.createmission_modal select,
+.createmission_modal textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.createmission_modal textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.createmission_buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.createmission_buttons button {
+  flex: 1;
+}
+

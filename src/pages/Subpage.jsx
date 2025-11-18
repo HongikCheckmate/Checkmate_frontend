@@ -5,6 +5,7 @@ import Loginsuccess from "../components/Loginsuccess"
 import Button from "../components/Button"
 import Missionlist from "../components/Missionlist"
 import Invite from "./Invite"
+import CreateMissionModal from "../components/CreateMissionModal"
 import axios from "axios"
 import "./Subpage.css"
 import Modal from 'react-modal'
@@ -21,6 +22,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const [IsInviteOpen, setIsInviteOpen]=useState(false)
   const [members, setMembers]=useState([])
   const [isMemberModalOpen, setIsMemberModalOpen]=useState(false)
+  const [isCreateMissionOpen, setIsCreateMissionOpen]=useState(false)
 
   const [isEditOpen, setIsEditOpen]=useState(false)
   const [editName, setEditName]=useState("")  
@@ -129,6 +131,22 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const handleInviteClick=()=>setIsInviteOpen(true)
   const handleInviteClose=()=>setIsInviteOpen(false)
 
+  useEffect(() => {
+  const fetchGoals = async () => {
+    try {
+      const res = await axios.get(
+        `https://checkmate.kimbepo.xyz/api/goals/group/${subId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+
+      setGroupMissions(res.data || [])
+    } catch (err) {
+      console.error("그룹 목표(미션) 조회 실패:", err)
+    }
+  }
+
+  fetchGoals()
+}, [subId, token])
   return (
     <div className="subpage_container">
       {group &&(
@@ -181,7 +199,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
             {isLoggedIn && <Loginsuccess user={user} onLogout={onLogout} />}
             <div className='subpage_button'>
               <Button text="멤버 초대하기" type="POSITIVE" onClick={handleInviteClick}/> <br/>
-              {isManager && <Button text="새 미션 만들기" type="POSITIVE"/>} <br/>
+              {isManager && <Button text="새 미션 만들기" type="POSITIVE" onClick={()=>setIsCreateMissionOpen(true)}/>} <br/>
               <Button text="그룹 탈퇴하기" type="NEGATIVE" /> <br/>
               {isManager && <Button text="그룹 삭제하기" type="NEGATIVE" />}
             </div>
@@ -267,6 +285,22 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
               </button>
             </div>
           </Modal>
+          <CreateMissionModal
+            isOpen={isCreateMissionOpen}
+            onClose={() => setIsCreateMissionOpen(false)}
+            groupId={group.id}
+            token={token}
+            onSuccess={() => {
+              setIsCreateMissionOpen(false)
+              // 미션 목록 다시 불러오기
+              axios
+                .get(`https://checkmate.kimbepo.xyz/api/goals/group/${subId}`, {
+                  headers: { Authorization: `Bearer ${token}` }
+                })
+                .then(res => setGroupMissions(res.data || []))
+            }}
+          />
+
       </>
       )}
     </div>
