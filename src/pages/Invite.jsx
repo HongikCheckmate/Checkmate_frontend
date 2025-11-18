@@ -20,7 +20,7 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
     if (!searchNickname) return
 
     try {
-      const response = await fetch(`https://checkmate.kimbepo.xyz/api/user/search?query=${searchNickname}`,{
+      const response = await fetch(`http://13.124.171.54:8080/api/user/search?query=${searchNickname}`,{
       headers:{
         'Authorization':`Bearer ${token}`,
       },
@@ -42,15 +42,25 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
 }
 
   const handleInvite = async (inviteeId, nickname) => {
+    console.log(searchNicknameResult)
+
     try {
-      const inviterId = user.username
-      const response = await fetch(`https://checkmate.kimbepo.xyz/api/invites`, {
+      const inviterId = Number(user.username)
+      const inviteeLong= Number(inviteeId)
+      const groupLong= Number(groupId)
+
+       if (isNaN(inviterId) || isNaN(inviteeLong) || isNaN(groupLong)) {
+        alert("초대하려는 유저 정보가 올바르지 않습니다.")
+        return
+    }
+
+      const response = await fetch(`http://13.124.171.54:8080/api/invites`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization':`Bearer ${token}`
         },
-        body: JSON.stringify({ inviterId, inviteeId, groupId }),
+        body: JSON.stringify({ inviterId, inviteeId:inviteeLong, groupId:groupLong }),
       })
       console.log({body:{ inviterId, inviteeId, groupId }})
 
@@ -80,11 +90,15 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
 
       <div className="nicknamelist">
         {Array.isArray(searchNicknameResult)&&searchNicknameResult.length === 0 && (<p>검색 결과가 없습니다.</p>)}
-        {searchNicknameResult.map((u) => {
+        {searchNicknameResult.map((u,index) => {
+          const username=typeof u==='string'?u:u.username
+          const nickname=typeof u==='string'?u:u.nickname
+
           const alreadyInvited = selectedMembers.includes(u.username)
+          
           return (
-            <div key={u.username} className="searchnicknamelist">
-              {u.nickname}
+            <div key={username || index} className="searchnicknamelist">
+              {nickname}
               <Button
                 text={alreadyInvited ? '초대됨' : '초대하기'}
                 type="POSITIVE"

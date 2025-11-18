@@ -15,7 +15,7 @@ const Signup=({isOpen,onClose})=>{
         }
 
         try {
-            const res = await fetch('https://checkmate.kimbepo.xyz/api/user/signup', {
+            const res = await fetch('http://13.124.171.54:8080/api/user/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

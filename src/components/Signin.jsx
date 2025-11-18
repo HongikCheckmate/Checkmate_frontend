@@ -5,7 +5,7 @@ const useSignin = () => {
 
     const login = async (username, password) => {
         try {
-            const response = await fetch('https://checkmate.kimbepo.xyz/user/login', {
+            const response = await fetch('http://13.124.171.54:8080/user/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),

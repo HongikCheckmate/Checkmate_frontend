@@ -38,7 +38,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
    useEffect(() => {
     const fetchGroup = async () => {
       try {
-        const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}`, {
+        const res = await axios.get(`http://13.124.171.54:8080/api/group/${subId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
 
@@ -58,7 +58,6 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
         setGroup(mapped)
         setMembers([])
         setGroupMissions([])
-        console.log("그룹 데이터:", mapped)
       } catch (err) {
         console.error("그룹 정보 불러오기 실패:", err)
       }
@@ -66,20 +65,20 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
     fetchGroup()
   }, [subId, token])
 
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}/members`, {
-          headers: { Authorization: `Bearer ${token}` },
-          params:{sort:'join',reverse: false, page:0},
-        })
-        setMembers(res.data.users || [])
-      } catch (err) {
-        console.error("멤버 정보 불러오기 실패:", err)
-      }
-    }
-    fetchMembers()
-  }, [subId, token])
+  // useEffect(() => {
+  //   const fetchMembers = async () => {
+  //     try {
+  //       const res = await axios.get(`http://13.124.171.54:8080/api/group/${subId}/members`, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //         params:{sort:'join',reverse: false, page:0},
+  //       })
+  //       setMembers(res.data.users || [])
+  //     } catch (err) {
+  //       console.error("멤버 정보 불러오기 실패:", err)
+  //     }
+  //   }
+  //   fetchMembers()
+  // }, [subId, token])
 
   const openEditModal=()=>{
     setEditName(group.room_name)
@@ -100,7 +99,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
       if (newLeader !== group.room_manager_username) body.leader = newLeader
 
       console.log("수정 내용:", body)
-      await axios.patch(`https://checkmate.kimbepo.xyz/api/group/${subId}`,
+      await axios.patch(`http://13.124.171.54:8080/api/group/${subId}`,
         body,
         { headers: { Authorization: `Bearer ${token}` }})
       
@@ -115,7 +114,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const handleKickMember=async(username, reason)=>{
     if (!window.confirm(`${username}님을 그룹에서 추방하시겠습니까?`)) return
     try{
-      await axios.delete(`https://checkmate.kimbepo.xyz/api/group/${subId}/members/${username}`,{
+      await axios.delete(`http://13.124.171.54:8080/api/group/${subId}/members/${username}`,{
         headers: { Authorization: `Bearer ${token}` },
         data: { reason },
       })
@@ -135,18 +134,19 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const fetchGoals = async () => {
     try {
       const res = await axios.get(
-        `https://checkmate.kimbepo.xyz/api/goals/group/${subId}`,
+        `http://13.124.171.54:8080/api/goals/group/${subId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
 
-      setGroupMissions(res.data || [])
+
+      setGroupMissions(res.data.goals || [])
     } catch (err) {
       console.error("그룹 목표(미션) 조회 실패:", err)
     }
   }
-
   fetchGoals()
 }, [subId, token])
+
   return (
     <div className="subpage_container">
       {group &&(
@@ -155,6 +155,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
           onClose={handleInviteClose}
           groupId={group.id}
           token={token}
+          user={user}
         />
 
         <div className="subpage_content">
@@ -171,7 +172,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
                 </p>
                 <p>
                   <strong>인원:</strong> {group.member_count}명&nbsp;
-                  <Button text="상세 보기" onClick={()=>setIsMemberModalOpen(true)}/>
+                  {/* <Button text="상세 보기" onClick={()=>setIsMemberModalOpen(true)}/> */}
                 </p>
                 <p className="group_desc">
                   {group.room_info}
@@ -294,7 +295,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
               setIsCreateMissionOpen(false)
               // 미션 목록 다시 불러오기
               axios
-                .get(`https://checkmate.kimbepo.xyz/api/goals/group/${subId}`, {
+                .get(`http://13.124.171.54:8080/api/goals/group/${subId}`, {
                   headers: { Authorization: `Bearer ${token}` }
                 })
                 .then(res => setGroupMissions(res.data || []))

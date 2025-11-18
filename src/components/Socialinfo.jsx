@@ -17,7 +17,7 @@ const Socialinfo = () => {
     }
 
     try {
-      const res = await fetch('https://checkmate.kimbepo.xyz/api/oauth2/sign-up', {
+      const res = await fetch('http://13.124.171.54:8080/api/oauth2/sign-up', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

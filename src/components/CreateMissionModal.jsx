@@ -95,7 +95,7 @@ const CreateMissionModal = ({ isOpen, onClose, groupId, token, onSuccess }) => {
                 console.log("미션 생성 요청 본문:", body)
 
         const res = await axios.post(
-          "https://checkmate.kimbepo.xyz/api/goals",
+          "http://13.124.171.54:8080/api/goals",
           body,
           { headers: { Authorization: `Bearer ${token}` } }
         )
