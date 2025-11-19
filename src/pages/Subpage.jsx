@@ -65,20 +65,20 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
     fetchGroup()
   }, [subId, token])
 
-  // useEffect(() => {
-  //   const fetchMembers = async () => {
-  //     try {
-  //       const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}/members`, {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //         params:{sort:'join',reverse: false, page:0},
-  //       })
-  //       setMembers(res.data.users || [])
-  //     } catch (err) {
-  //       console.error("멤버 정보 불러오기 실패:", err)
-  //     }
-  //   }
-  //   fetchMembers()
-  // }, [subId, token])
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}/members`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params:{sort:'join',reverse: false, page:0},
+        })
+        setMembers(res.data.users || [])
+      } catch (err) {
+        console.error("멤버 정보 불러오기 실패:", err)
+      }
+    }
+    fetchMembers()
+  }, [subId, token])
 
   const openEditModal=()=>{
     setEditName(group.room_name)
