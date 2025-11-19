@@ -20,7 +20,7 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
     if (!searchNickname) return
 
     try {
-      const response = await fetch(`http://13.124.171.54:8080/api/user/search?query=${searchNickname}`,{
+      const response = await fetch(`http://13.124.171.54:8080/api/user/search?nickname=${encodeURIComponent(searchNickname)}`,{
       headers:{
         'Authorization':`Bearer ${token}`,
       },
@@ -29,7 +29,6 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
 
     
     const data=await response.json()
-    console.log(data)
 
     if (Array.isArray(data.content)) {
       setSearchNicknameResult(data.content)
@@ -41,18 +40,21 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
   }
 }
 
-  const handleInvite = async (inviteeId, nickname) => {
+  const handleInvite = async (targetUser) => {
     console.log(searchNicknameResult)
+    console.log("현재 user 정보:", user)
+console.log("inviterId:", user?.id)
 
     try {
-      const inviterId = Number(user.username)
-      const inviteeLong= Number(inviteeId)
+      const inviterId = user.id
+      const inviteeId= targetUser.id
       const groupLong= Number(groupId)
 
-       if (isNaN(inviterId) || isNaN(inviteeLong) || isNaN(groupLong)) {
+       if (!inviterId || !inviteeId || isNaN(groupLong)) {
         alert("초대하려는 유저 정보가 올바르지 않습니다.")
         return
-    }
+      }
+      const body={inviterId, inviteeId, groupId:groupLong}
 
       const response = await fetch(`http://13.124.171.54:8080/api/invites`, {
         method: 'POST',
@@ -60,14 +62,14 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
           'Content-Type': 'application/json',
           'Authorization':`Bearer ${token}`
         },
-        body: JSON.stringify({ inviterId, inviteeId:inviteeLong, groupId:groupLong }),
+        body: JSON.stringify(body),
       })
-      console.log({body:{ inviterId, inviteeId, groupId }})
+      console.log({body})
 
       if (response.ok) {
-        alert(`${nickname} 님에게 초대장을 보냈습니다!`)
+        alert(`${targetUser.nickname} 님에게 초대장을 보냈습니다!`)
         onSelectMember?.(inviteeId)
-        setSearchNicknameResult((prev) => prev.filter(u=>u.username!==inviteeId))
+        setSearchNicknameResult((prev) => prev.filter(u=>u.id!==inviteeId))
       } else {
         alert('초대 실패')
       }
@@ -91,19 +93,17 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
       <div className="nicknamelist">
         {Array.isArray(searchNicknameResult)&&searchNicknameResult.length === 0 && (<p>검색 결과가 없습니다.</p>)}
         {searchNicknameResult.map((u,index) => {
-          const username=typeof u==='string'?u:u.username
-          const nickname=typeof u==='string'?u:u.nickname
 
           const alreadyInvited = selectedMembers.includes(u.username)
           
           return (
-            <div key={username || index} className="searchnicknamelist">
-              {nickname}
+            <div key={u.id ?? index} className="searchnicknamelist">
+              {u.nickname} ({u.username})
               <Button
                 text={alreadyInvited ? '초대됨' : '초대하기'}
                 type="POSITIVE"
                 disabled={alreadyInvited}
-                onClick={() => handleInvite(u.username, u.nickname)}
+                onClick={() => handleInvite(u)}
               />
             </div>
           )

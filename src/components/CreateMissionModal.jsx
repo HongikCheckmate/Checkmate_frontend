@@ -93,6 +93,10 @@ const CreateMissionModal = ({ isOpen, onClose, groupId, token, onSuccess }) => {
   }
 })
                 console.log("미션 생성 요청 본문:", body)
+                console.log("토큰", token)
+                console.log("미션 생성 요청 헤더:", {
+  Authorization: `Bearer ${token}`
+})
 
         const res = await axios.post(
           "http://13.124.171.54:8080/api/goals",
