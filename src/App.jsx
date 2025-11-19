@@ -22,13 +22,10 @@ function App() {
   const fetchGroups = async (queryString = '') => {
     try {
       const token = localStorage.getItem('accessToken')
-      const res = await axios.get("http://13.124.171.54:8080/api/group/search", {
-        params: {
-          query: queryString
-        },
-        headers: {
-          Authorization: token ? `Bearer ${token}` : undefined,
-        },
+      const config=token?{headers:{Authorization:`Bearer ${token}`}}:{}
+      const res = await axios.get("https://checkmate.kimbepo.xyz/api/group/search", {
+        params: {query: queryString},
+        ...config
       })
 
       const dataArray = Array.isArray(res.data.content) ? res.data.content : []
@@ -60,13 +57,17 @@ function App() {
 
   }, [])
 
-  const handleLogin = (userInfo, token) => {
-
-    const userObject = typeof userInfo === 'string' ? { nickname: userInfo } : userInfo
+  const handleLogin = (userInfo) => {
+    const userObject = {
+      id: userInfo.id,
+      username: userInfo.username,
+      nickname: userInfo.nickname,
+      accessToken: userInfo.accessToken,
+    }
     setUser(userObject)
     setIsLoggedIn(true)
     localStorage.setItem('user', JSON.stringify(userObject))
-    localStorage.setItem('accessToken', token)
+    localStorage.setItem('accessToken', userObject.accessToken)
     fetchGroups()
   }
 

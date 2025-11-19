@@ -33,12 +33,12 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const currentUser = user?.nickname || ""
   const token=localStorage.getItem('accessToken')
 
-  const isManager = group?.room_manager_username === user?.username
+  const isManager = user&&group?.room_manager_username === user?.username
 
    useEffect(() => {
     const fetchGroup = async () => {
       try {
-        const res = await axios.get(`http://13.124.171.54:8080/api/group/${subId}`, {
+        const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
 
@@ -68,7 +68,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   // useEffect(() => {
   //   const fetchMembers = async () => {
   //     try {
-  //       const res = await axios.get(`http://13.124.171.54:8080/api/group/${subId}/members`, {
+  //       const res = await axios.get(`https://checkmate.kimbepo.xyz/api/group/${subId}/members`, {
   //         headers: { Authorization: `Bearer ${token}` },
   //         params:{sort:'join',reverse: false, page:0},
   //       })
@@ -99,7 +99,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
       if (newLeader !== group.room_manager_username) body.leader = newLeader
 
       console.log("수정 내용:", body)
-      await axios.patch(`http://13.124.171.54:8080/api/group/${subId}`,
+      await axios.patch(`https://checkmate.kimbepo.xyz/api/group/${subId}`,
         body,
         { headers: { Authorization: `Bearer ${token}` }})
       
@@ -114,7 +114,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const handleKickMember=async(username, reason)=>{
     if (!window.confirm(`${username}님을 그룹에서 추방하시겠습니까?`)) return
     try{
-      await axios.delete(`http://13.124.171.54:8080/api/group/${subId}/members/${username}`,{
+      await axios.delete(`https://checkmate.kimbepo.xyz/api/group/${subId}/members/${username}`,{
         headers: { Authorization: `Bearer ${token}` },
         data: { reason },
       })
@@ -134,7 +134,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
   const fetchGoals = async () => {
     try {
       const res = await axios.get(
-        `http://13.124.171.54:8080/api/goals/group/${subId}`,
+        `https://checkmate.kimbepo.xyz/api/goals/group/${subId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
 
@@ -295,7 +295,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
               setIsCreateMissionOpen(false)
               // 미션 목록 다시 불러오기
               axios
-                .get(`http://13.124.171.54:8080/api/goals/group/${subId}`, {
+                .get(`https://checkmate.kimbepo.xyz/api/goals/group/${subId}`, {
                   headers: { Authorization: `Bearer ${token}` }
                 })
                 .then(res => setGroupMissions(res.data || []))

@@ -18,12 +18,9 @@ const Login = ({ onLogin }) => {
   const handleLogin = async () => {
     try {
       const data = await login(username, password)
-      onLogin({
-        username,
-        nickname: data.nickname,
-        accessToken: data.accessToken,
-      })
+      onLogin(data) 
       localStorage.setItem('accessToken', data.accessToken)
+      localStorage.setItem('user', JSON.stringify(data))
     } catch (err) {
       alert('로그인 정보가 바르지 않습니다')
     }

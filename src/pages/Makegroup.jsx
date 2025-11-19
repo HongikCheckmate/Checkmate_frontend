@@ -37,7 +37,7 @@ const Makegroup = ({ isOpen, onClose }) => {
     console.log("Authorization 헤더:", `Bearer ${token}`)
 
     try{
-      await axios.post("http://13.124.171.54:8080/group/create",{
+      await axios.post("https://checkmate.kimbepo.xyz/group/create",{
         name: input.name,
         description:input.description,
         hidden:input.hidden,

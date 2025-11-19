@@ -20,7 +20,7 @@ const Invite = ({ isOpen, onClose, onSelectMember, selectedMembers = [], groupId
     if (!searchNickname) return
 
     try {
-      const response = await fetch(`http://13.124.171.54:8080/api/user/search?nickname=${encodeURIComponent(searchNickname)}`,{
+      const response = await fetch(`https://checkmate.kimbepo.xyz/api/user/search?nickname=${encodeURIComponent(searchNickname)}`,{
       headers:{
         'Authorization':`Bearer ${token}`,
       },
@@ -56,7 +56,7 @@ console.log("inviterId:", user?.id)
       }
       const body={inviterId, inviteeId, groupId:groupLong}
 
-      const response = await fetch(`http://13.124.171.54:8080/api/invites`, {
+      const response = await fetch(`https://checkmate.kimbepo.xyz/api/invites`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ const Sociallogin = () => {
   const handleSocialLogin = (provider) => {
     console.log("소셜 로그인 시작:", provider)
     const redirectUri = `https://check-mate-web.vercel.app/`
-    window.location.href = `http://13.124.171.54:8080/oauth2/authorization/${provider}/?redirect_uri=${redirectUri}`
+    window.location.href = `https://checkmate.kimbepo.xyz/oauth2/authorization/${provider}/?redirect_uri=${redirectUri}`
   }
 
   return (

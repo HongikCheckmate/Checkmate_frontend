@@ -5,7 +5,7 @@ const useSignin = () => {
 
     const login = async (username, password) => {
         try {
-            const response = await fetch('http://13.124.171.54:8080/user/login', {
+            const response = await fetch('https://checkmate.kimbepo.xyz/user/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
@@ -21,16 +21,15 @@ const useSignin = () => {
                 const msg = data?.message||data?.error||'로그인 실패'
                 throw new Error(msg)
             }
-            
 
-            if (data?.accessToken){
-                localStorage.setItem('accessToken',data.accessToken)
+            const userData={
+                id: data.id,
+                username: data.username,
+                nickname: data.nickname,
+                accessToken: data.accessToken,
             }
-
-            if (data?.refreshToken){
-                localStorage.setItem('refreshToken',data.refreshToken)
-            }
-            return data
+    
+            return userData
         } catch (err) {
             console.error('Login 요청 중 에러발생:', err)
             setError(err.message)

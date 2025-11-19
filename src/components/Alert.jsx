@@ -8,7 +8,7 @@ const Alert = ({ isOpen, onClose, user }) => {
   const [alerts, setAlerts] = useState([])
   const token = localStorage.getItem('accessToken')
 
-  const userId = user?.username  
+  const userId = user?.id  
 
   useEffect(() => {
     if (isOpen) fetchAlerts()
@@ -18,7 +18,7 @@ const Alert = ({ isOpen, onClose, user }) => {
   const fetchAlerts = async () => {
     try {
       const res = await axios.get(
-        `http://13.124.171.54:8080/api/invites/${userId}`,
+        `https://checkmate.kimbepo.xyz/api/invites/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -34,7 +34,7 @@ const Alert = ({ isOpen, onClose, user }) => {
   const handleAccept = async (alert) => {
     try {
       await axios.post(
-        `http://13.124.171.54:8080/api/invites/action`,
+        `https://checkmate.kimbepo.xyz/api/invites/action`,
         {
           inviteId: alert.id,
           action: "ACCEPT"
@@ -53,7 +53,7 @@ const Alert = ({ isOpen, onClose, user }) => {
   const handleDecline = async (alert) => {
     try {
       await axios.post(
-        `http://13.124.171.54:8080/api/invites/action`,
+        `https://checkmate.kimbepo.xyz/api/invites/action`,
         {
           inviteId: alert.id,
           action: "REJECT"
@@ -85,7 +85,7 @@ const Alert = ({ isOpen, onClose, user }) => {
             alerts.map(alert => (
               <div key={alert.id} className='alert_item'>
                 <p>
-                  <strong>{alert.invitername}</strong> 님이
+                  <strong>{alert.inviterName}</strong> 님이
                   <br />
                   <strong>{alert.invitedGroupId}</strong>번 그룹에 초대했습니다.
                 </p>

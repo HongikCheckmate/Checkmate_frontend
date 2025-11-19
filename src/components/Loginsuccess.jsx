@@ -50,6 +50,7 @@ const Loginsuccess=({user,onLogout})=>{
             <Alert
                 isOpen={isAlertOpen}
                 onClose={()=>setIsAlertOpen(false)}
+                user={user}
             />
         </div>
     

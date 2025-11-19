@@ -23,7 +23,7 @@ const Mypage=({isOpen, onClose})=>{
         if (isOpen) {
             const fetchUserData=async()=>{
                 try{
-                    const res=await axios.get('http://13.124.171.54:8080/api/user/mypage',{
+                    const res=await axios.get('https://checkmate.kimbepo.xyz/api/user/mypage',{
                         headers: {Authorization: `Bearer ${token}`}
                     })
                     setUserData(res.data)
@@ -46,7 +46,7 @@ const Mypage=({isOpen, onClose})=>{
         if (isEditing) {
             try{
                 await axios.put(
-                    'http://13.124.171.54:8080/api/user/mypage',
+                    'https://checkmate.kimbepo.xyz/api/user/mypage',
                     {
                         username: tempData.username,
                         email: tempData.email,
