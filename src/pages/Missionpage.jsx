@@ -21,16 +21,22 @@ const Missionpage = () => {
     const fetchMission = async () => {
       try {
         const res = await axios.get(
-          `https://checkmate.kimbepo.xyz/api/goals/${missionId}`,
+          `https://checkmate.kimbepo.xyz/api/goals/group/${subId}`,
           { headers: authHeader }
         )
-        setMission(res.data)
+        const list=res.data.goals || []
+        const found=list.find(m=>m.id==missionId)
+        if (!found) {
+          alert("해당 미션을 찾을 수 없습니다.")
+        }
+
+        setMission(found)
       } catch (err) {
         console.error("미션 불러오기 실패:", err)
       }
     }
     fetchMission()
-  }, [missionId])
+  }, [missionId,subId])
 
   // 인증상태 조회
   useEffect(() => {
@@ -165,7 +171,7 @@ const Missionpage = () => {
       </div>
 
       <div className="mission_actions">
-        <Button text="제출하기" onClick={handleSubmit} />
+        <Button text="제출하기" type="POSITIVE" onClick={handleSubmit} />
         <Button text="목록으로" onClick={() => navigate(`/sub/${subId}`)} />
       </div>
     </div>
