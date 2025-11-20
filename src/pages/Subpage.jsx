@@ -44,8 +44,6 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
 
         const d = res.data
 
-         
-        
         const mapped={
           id: d.id,
           room_name: d.name,
@@ -138,10 +136,19 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       )
 
-
-      setGroupMissions(res.data.goals || [])
+      const apiGoals = res.data.goals || []
+      const mapped=apiGoals.map(g=>({
+        id: g.id,
+        title:g.name,
+        start:g.createdDate,
+        end: g.endDate,
+        status: "PENDING",
+        type: g.certificationType,
+        cycle: g.cycle,
+      }))
+      setGroupMissions(mapped)
     } catch (err) {
-      console.error("그룹 목표(미션) 조회 실패:", err)
+      console.error("미션 조회 실패:", err)
     }
   }
   fetchGoals()
@@ -183,10 +190,6 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
                 )}
               </div>
             </div>
-            
-
-            
-
             
             <Missionlist missions={groupMissions} subId={subId}/>
 
@@ -298,7 +301,19 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
                 .get(`https://checkmate.kimbepo.xyz/api/goals/group/${subId}`, {
                   headers: { Authorization: `Bearer ${token}` }
                 })
-                .then(res => setGroupMissions(res.data || []))
+                .then(res => {
+                  const apiGoals = res.data.goals || []
+                  setGroupMissions(apiGoals.map(g => ({
+                    id: g.id,
+                    title: g.name,
+                    start: g.createdDate,
+                    end: g.endDate,
+                    status: "PENDING",
+                    type: g.certificationType,
+                    cycle: g.cycle,
+                  })))
+                }
+                )
             }}
           />
 
