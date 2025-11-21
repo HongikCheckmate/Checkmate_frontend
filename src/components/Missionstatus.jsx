@@ -34,7 +34,7 @@ const MissionStatus = ({ isOpen, onClose, mission, user }) => {
   const viewStatus=(code)=>{
     switch(code){
       case 'PENDING':
-        return '미제출'
+        return '보류중'
       case 'SUBMITTED':
         return '제출 완료'
       case 'APPROVED':

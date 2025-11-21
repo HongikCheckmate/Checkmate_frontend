@@ -88,10 +88,11 @@ const Missionpage = () => {
           alert("내용을 입력해주세요.")
           return
         }
+
         await axios.post(
           `https://checkmate.kimbepo.xyz/api/certifications/text?goalId=${missionId}`,
           { content },
-          { headers: authHeader }
+          { headers: authHeader },
         )
       }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Button from './Button'
 import './Socialinfo.css'
 
@@ -8,6 +8,22 @@ const Socialinfo = () => {
     email: '',
     phone_number: '',
   })
+
+  const getToken = () => {
+    const params = new URLSearchParams(window.location.search)
+
+    const urlAccess = params.get("accessToken")
+    const urlRefresh = params.get("refreshToken")
+
+    if (urlAccess) localStorage.setItem("accessToken", urlAccess)
+    if (urlRefresh) localStorage.setItem("refreshToken", urlRefresh)
+
+    return urlAccess || localStorage.getItem("accessToken")
+  }
+  
+  useEffect(() => {
+    getToken()
+  }, [])
 
   const handleSubmit = async () => {
     const token = localStorage.getItem('accessToken')

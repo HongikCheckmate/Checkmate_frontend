@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import Button from "./Button"
 import "./Socialsignup.css"
@@ -12,6 +12,31 @@ const Socialsignup = () => {
 
   const navigate = useNavigate()
 
+
+//token 먼저 처리
+  const getToken=() => {
+    const params = new URLSearchParams(window.location.search)
+
+    const urlAccess = params.get("accessToken")
+    const urlRefresh = params.get("refreshToken")
+
+    if (urlAccess) localStorage.setItem("accessToken", urlAccess)
+    if (urlRefresh) localStorage.setItem("refreshToken", urlRefresh)
+
+    return urlAccess || localStorage.getItem("accessToken")
+  }
+  
+  useEffect(() => {
+    getToken()
+  }, [])
+
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search)
+  console.log("URL PARAMS RAW:", window.location.search)
+  console.log("accessToken:", params.get("accessToken"))
+  console.log("refreshToken:", params.get("refreshToken"))
+}, [])
+
   const handleChange = (e) => {
     setInfo({
       ...info,
@@ -20,7 +45,8 @@ const Socialsignup = () => {
   }
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem("accessToken")
+    const token = getToken()
+
     if (!token) {
       alert("로그인 정보가 없습니다. 다시 로그인해주세요.")
       navigate("/")
