@@ -30,7 +30,19 @@ const Missionpage = () => {
           alert("해당 미션을 찾을 수 없습니다.")
         }
 
-        setMission(found)
+        const mapped={
+          id:found.id,
+          name:found.name,
+          certificationType:found.certificationType,
+          externalMethod:found.externalMethod,
+          cycle:found.cycle,
+          start: found.createdDate,
+          createdDate: found.createdDate,
+          endDate: found.endDate,
+          groupId: found.groupId
+        } 
+
+        setMission(mapped)
       } catch (err) {
         console.error("미션 불러오기 실패:", err)
       }

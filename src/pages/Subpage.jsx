@@ -191,7 +191,7 @@ const Subpage = ({ isLoggedIn, user, onLogout }) => {
               </div>
             </div>
             
-            <Missionlist missions={groupMissions} subId={subId}/>
+            <Missionlist missions={groupMissions} subId={subId} user={user} group={group}/>
 
             <div className="subpage_back">
               <Button text='목록으로' onClick={()=>navigate('/')}/>

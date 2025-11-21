@@ -4,13 +4,23 @@ import Button from "./Button"
 import Missionstatus from "./Missionstatus"
 import "./Missions.css"
 
-const Missions= ({ missions,subId }) => {
+const Missions= ({ missions,subId, user, group }) => {
 
   const [isModalOpen, setIsModalOpen]=useState(false)
   const [selectedMission,setSelectedMission]=useState(null)
 
   const viewStatus=(mission)=>{
-    setSelectedMission(mission)
+    const mapped={
+      id:mission.id,
+      name:mission.title,
+      start:mission.start,
+      end:mission.end,
+      certificationType:mission.type,
+      cycle:mission.cycle,
+      leaderUsername:group?.room_manager_username
+    }
+
+    setSelectedMission(mapped)
     setIsModalOpen(true)
   }
 
@@ -57,7 +67,7 @@ const Missions= ({ missions,subId }) => {
         isOpen={isModalOpen}
         onClose={()=>setIsModalOpen(false)}
         mission={selectedMission}
-        groupId={subId}
+        user={user}
       />
     )}
     </div>
