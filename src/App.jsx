@@ -7,7 +7,7 @@ import Missionpage from './pages/Missionpage'
 import Makegroup from "./pages/Makegroup"
 import Signup from "./components/Signup"
 import Invite from './pages/Invite'
-import Oauthcallback from './components/Oauthcallback'
+// import Oauthcallback from './components/Oauthcallback'
 import Socialsignup from './components/Socialsignup'
 
 export const RoomStateContext = createContext()
@@ -48,7 +48,8 @@ function App() {
   useEffect(() => {
     const savedUser = localStorage.getItem('user')
     const token = localStorage.getItem('accessToken')
-    if (savedUser) {
+
+    if (savedUser&&token) {
       setUser(JSON.parse(savedUser))
       setIsLoggedIn(true)
     }
@@ -89,8 +90,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/group" element={<Makegroup />} />
           <Route path="/invite" element={<Invite />} />
-          <Route path="/oauth/callback" element={<Oauthcallback />} />
-          <Route path="/oauth-signup-info" element={<Socialsignup />} />
+          {/* <Route path="/oauth/callback" element={<Oauthcallback />} /> */}
+          <Route path="/oauth-signup-info" element={<Socialsignup onLogin={handleLogin}/>} />
         </Routes>
       </RoomStateContext.Provider>
     </RoomDispatchContext.Provider>

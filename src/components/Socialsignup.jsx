@@ -2,8 +2,9 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import Button from "./Button"
 import "./Socialsignup.css"
+import {jwtDecode} from 'jwt-decode'
 
-const Socialsignup = () => {
+const Socialsignup = ({onLogin}) => {
   const [info, setInfo] = useState({
     nickname: "",
     email: "",
@@ -30,12 +31,17 @@ const Socialsignup = () => {
     getToken()
   }, [])
 
-  useEffect(() => {
-  const params = new URLSearchParams(window.location.search)
-  console.log("URL PARAMS RAW:", window.location.search)
-  console.log("accessToken:", params.get("accessToken"))
-  console.log("refreshToken:", params.get("refreshToken"))
-}, [])
+
+  const createUserObject=(accessToken,nickname)=>{
+    const decoded=jwtDecode(accessToken)
+
+    return {
+      id: decoded.userId,
+      username: decoded.username,
+      nickname: nickname,
+      accessToken
+    }
+  }
 
   const handleChange = (e) => {
     setInfo({
@@ -66,6 +72,13 @@ const Socialsignup = () => {
       const data = await res.json()
 
       if (res.ok) {
+        localStorage.setItem("accessToken", data.accessToken)
+        localStorage.setItem("refreshToken", data.refreshToken)
+
+        const userObj=createUserObject(data.accessToken, info.nickname)
+
+        localStorage.setItem("user", JSON.stringify(userObj))
+        onLogin(userObj)
         alert("회원정보가 등록되었습니다!")
         navigate("/")
       } else {
