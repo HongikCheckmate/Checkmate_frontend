@@ -56,7 +56,10 @@ function App() {
 
     if (urlAccess) localStorage.setItem("accessToken", urlAccess)
     if (urlRefresh) localStorage.setItem("refreshToken", urlRefresh)
-    if (urlAccess&&isGuest==='false') {
+
+    const accessToken=localStorage.getItem("accessToken")
+
+    if (accessToken&&isGuest==='false') {
       try {
         const decoded=jwtDecode(urlAccess)
         const userObj={
@@ -74,10 +77,13 @@ function App() {
       }
     }
 
-    const savedUser = localStorage.getItem('user')
-    const token = localStorage.getItem('accessToken')
+    if (urlAccess||urlRefresh){
+      window.history.replaceState({},'','/')
+    }
 
-    if (savedUser&&token) {
+    const savedUser = localStorage.getItem('user')
+
+    if (savedUser&&accessToken) {
       setUser(JSON.parse(savedUser))
       setIsLoggedIn(true)
     }
@@ -117,7 +123,6 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/group" element={<Makegroup />} />
           <Route path="/invite" element={<Invite />} />
-          {/* <Route path="/oauth/callback" element={<Oauthcallback />} /> */}
           <Route path="/oauth-signup-info" element={<Socialsignup onLogin={handleLogin}/>} />
         </Routes>
       </RoomStateContext.Provider>
