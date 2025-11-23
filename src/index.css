@@ -3,10 +3,7 @@
     src: url("/public/Karma/Karma-Regular.ttf")
 }
 
-@font-face{
-    font-family: "inter";
-    src: url("/public/Inter/Inter-Italic-VariableFont_opsz\,wght.ttf")
-}
+
 body{
     display:flex;
 }

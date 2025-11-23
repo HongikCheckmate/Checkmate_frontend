@@ -7,8 +7,8 @@ import Missionpage from './pages/Missionpage'
 import Makegroup from "./pages/Makegroup"
 import Signup from "./components/Signup"
 import Invite from './pages/Invite'
-// import Oauthcallback from './components/Oauthcallback'
 import Socialsignup from './components/Socialsignup'
+import jwtDecode from 'jwt-decode'
 
 export const RoomStateContext = createContext()
 export const RoomDispatchContext = createContext()
@@ -45,7 +45,35 @@ function App() {
     }
   }
 
+
+  // 초기 로그인 상태 확인
   useEffect(() => {
+
+    const params = new URLSearchParams(window.location.search)
+    const urlAccess = params.get("accessToken")
+    const urlRefresh = params.get("refreshToken")
+    const isGuest = params.get("isGuest")
+
+    if (urlAccess) localStorage.setItem("accessToken", urlAccess)
+    if (urlRefresh) localStorage.setItem("refreshToken", urlRefresh)
+    if (urlAccess&&isGuest==='false') {
+      try {
+        const decoded=jwtDecode(urlAccess)
+        const userObj={
+          id: decoded.userId,
+          username: decoded.username,
+          nickname: decoded.nickname,
+          accessToken: urlAccess
+        }
+        localStorage.setItem('user', JSON.stringify(userObj))
+        setUser(userObj)
+        setIsLoggedIn(true)
+        window.history.replaceState({},'','/')
+      }catch(e){
+        console.error("토큰 디코딩 실패",e)
+      }
+    }
+
     const savedUser = localStorage.getItem('user')
     const token = localStorage.getItem('accessToken')
 
@@ -55,7 +83,6 @@ function App() {
     }
 
     fetchGroups()
-
   }, [])
 
   const handleLogin = (userInfo) => {

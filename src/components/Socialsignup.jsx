@@ -32,13 +32,13 @@ const Socialsignup = ({onLogin}) => {
   }, [])
 
 
-  const createUserObject=(accessToken,nickname)=>{
+  const createUserObject=(accessToken)=>{
     const decoded=jwtDecode(accessToken)
 
     return {
       id: decoded.userId,
       username: decoded.username,
-      nickname: nickname,
+      nickname: decoded.nickname,
       accessToken
     }
   }
@@ -75,7 +75,7 @@ const Socialsignup = ({onLogin}) => {
         localStorage.setItem("accessToken", data.accessToken)
         localStorage.setItem("refreshToken", data.refreshToken)
 
-        const userObj=createUserObject(data.accessToken, info.nickname)
+        const userObj=createUserObject(data.accessToken)
 
         localStorage.setItem("user", JSON.stringify(userObj))
         onLogin(userObj)
