@@ -8,7 +8,7 @@ import Makegroup from "./pages/Makegroup"
 import Signup from "./components/Signup"
 import Invite from './pages/Invite'
 import Socialsignup from './components/Socialsignup'
-import jwtDecode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 export const RoomStateContext = createContext()
 export const RoomDispatchContext = createContext()
@@ -22,9 +22,9 @@ function App() {
   const fetchGroups = async (queryString = '') => {
     try {
       const token = localStorage.getItem('accessToken')
-      const config=token?{headers:{Authorization:`Bearer ${token}`}}:{}
+      const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {}
       const res = await axios.get("https://checkmate.kimbepo.xyz/api/group/search", {
-        params: {query: queryString},
+        params: { query: queryString },
         ...config
       })
 
@@ -45,45 +45,49 @@ function App() {
     }
   }
 
-
-  // 초기 로그인 상태 확인
+  // 초기 로그인 로직
   useEffect(() => {
-
     const params = new URLSearchParams(window.location.search)
     const urlAccess = params.get("accessToken")
     const urlRefresh = params.get("refreshToken")
     const isGuest = params.get("isGuest")
 
+    // 1) URL에서 받은 토큰 저장
     if (urlAccess) localStorage.setItem("accessToken", urlAccess)
     if (urlRefresh) localStorage.setItem("refreshToken", urlRefresh)
 
-    const accessToken=localStorage.getItem("accessToken")
+    // 저장 후 다시 읽기
+    const accessToken = localStorage.getItem("accessToken")
 
-    if (accessToken&&isGuest==='false') {
+    // 2) 기존 회원 (isGuest=false) → 바로 로그인 처리
+    if (accessToken && isGuest === "false") {
       try {
-        const decoded=jwtDecode(urlAccess)
-        const userObj={
+        const decoded = jwtDecode(accessToken)
+
+        const userObj = {
           id: decoded.userId,
           username: decoded.username,
           nickname: decoded.nickname,
-          accessToken: urlAccess
+          accessToken
         }
-        localStorage.setItem('user', JSON.stringify(userObj))
+
+        localStorage.setItem("user", JSON.stringify(userObj))
         setUser(userObj)
         setIsLoggedIn(true)
-        window.history.replaceState({},'','/')
-      }catch(e){
-        console.error("토큰 디코딩 실패",e)
+
+      } catch (e) {
+        console.error("토큰 디코딩 실패", e)
       }
     }
 
-    if (urlAccess||urlRefresh){
-      window.history.replaceState({},'','/')
+    // 3) URL query 제거
+    if (urlAccess || urlRefresh || isGuest !== null) {
+      window.history.replaceState({}, '', '/')
     }
 
-    const savedUser = localStorage.getItem('user')
-
-    if (savedUser&&accessToken) {
+    // 4) localStorage 기반 자동 로그인
+    const savedUser = localStorage.getItem("user")
+    if (savedUser && accessToken) {
       setUser(JSON.parse(savedUser))
       setIsLoggedIn(true)
     }
@@ -123,7 +127,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/group" element={<Makegroup />} />
           <Route path="/invite" element={<Invite />} />
-          <Route path="/oauth-signup-info" element={<Socialsignup onLogin={handleLogin}/>} />
+          <Route path="/oauth-signup-info" element={<Socialsignup onLogin={handleLogin} />} />
         </Routes>
       </RoomStateContext.Provider>
     </RoomDispatchContext.Provider>
