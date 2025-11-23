@@ -52,14 +52,12 @@ function App() {
     const urlRefresh = params.get("refreshToken")
     const isGuest = params.get("isGuest")
 
-    // 1) URL에서 받은 토큰 저장
     if (urlAccess) localStorage.setItem("accessToken", urlAccess)
     if (urlRefresh) localStorage.setItem("refreshToken", urlRefresh)
 
     // 저장 후 다시 읽기
     const accessToken = localStorage.getItem("accessToken")
 
-    // 2) 기존 회원 (isGuest=false) → 바로 로그인 처리
     if (accessToken && isGuest === "false") {
       try {
         const decoded = jwtDecode(accessToken)
@@ -80,12 +78,10 @@ function App() {
       }
     }
 
-    // 3) URL query 제거
     if (urlAccess || urlRefresh || isGuest !== null) {
       window.history.replaceState({}, '', '/')
     }
 
-    // 4) localStorage 기반 자동 로그인
     const savedUser = localStorage.getItem("user")
     if (savedUser && accessToken) {
       setUser(JSON.parse(savedUser))
